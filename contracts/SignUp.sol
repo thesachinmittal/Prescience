@@ -11,7 +11,7 @@ contract SignUp {
     address account;
     bool access;
   }
-  mapping (string => Account) Hero;
+  mapping (string => Account) public Hero;
 
   function() external payable{
     revert("Please try Again");
@@ -33,8 +33,8 @@ contract SignUp {
     _;
   }
 
-  modifier verifyName(string memory _username){
-    require (!Hero[_username].access," Account Name Exists");
+  modifier checkName(string memory _username){
+    require (!Hero[_username].access,"Hero Exist, Please Choose another name");
     _;
   }
 
@@ -71,10 +71,13 @@ contract SignUp {
   /* Account should made a threshold token transaction of JL tokens. */
   ///@param _name identification of user.
   ///@param _address Ethereum Address of the user.
-  function addAccount(string memory _name,address _address) public returns(bytes32){
+  function addAccount(string memory _name,address _address)
+  public
+  checkName(_name)
+  verifyCaller(Hero[_name].account)
+  returns(bytes32){
     uint threshold = 100;
     entryAmount(threshold);
-    require(!Hero[_name].access,"Hero Exist, Please Choose another name");
     Hero[_name].account = _address;
     Hero[_name].access = true;
   }
