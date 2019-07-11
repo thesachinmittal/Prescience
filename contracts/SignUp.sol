@@ -3,16 +3,22 @@ pragma solidity ^0.5.0;
 
 contract SignUp {
 
+  //
+  //State Variables
+  //
+
   ///@notice Owner's address
   address public owner;
-  string username;
 
   struct Account{
     address account;
     bool access;
   }
+
+  ///@notice Details of the user uniquely indentified from the username.
   mapping (string => Account) public Hero;
 
+  ///@notice Fallback function
   function() external payable{
     revert("Please try Again");
   }
@@ -59,8 +65,6 @@ contract SignUp {
   constructor() public {
     owner = msg.sender;
   }
-
-
 
   //
   //Functions
