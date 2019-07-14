@@ -8,11 +8,11 @@ contract SignUp {
   //
 
   ///@notice Owner's address
-  address public owner;
+  address public owner;     //owner of the contract
 
   struct Account{
-    address account;
-    bool access;
+    address account;        //Eth address linked to the registered account
+    bool access;            //if true the account is registered on platform
   }
 
   ///@notice Details of the user uniquely indentified from the username.
@@ -27,6 +27,8 @@ contract SignUp {
   //
   //Events
   //
+
+  ///@notice emits username after Succesful Registration
   event SuccesfulRegistration(string indexed _username);
 
   //
@@ -39,6 +41,7 @@ contract SignUp {
     _;
   }
 
+  ///@notice Check if the username is registered or not.
   modifier checkName(string memory _username){
     require (!Hero[_username].access,"Hero Exist, Please Choose another name");
     _;
