@@ -3,9 +3,9 @@ pragma solidity ^0.5.0;
 
 contract SignUp {
 
-  //
-  //State Variables
-  //
+  /**
+   *State Variables
+   */
 
   ///@notice Owner's address
   address public owner;     //owner of the contract
