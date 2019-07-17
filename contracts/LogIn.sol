@@ -6,18 +6,24 @@ contract LogIn is SignUp{
 
   event welcome(string indexed username);
 
-  modifier verifyName(string memory _username){
-    require (Hero[_username].access,"Hero Doesn't Exist");
-    _;
-  }
+//   modifier verifyName(bytes32 _username){
+//     require (Hero[_username].access,"Hero Doesn't Exist");
+//     _;
+//   }
+
+//   modifier checkPassword(bytes32 _key){
+//        require (Hero[username].key == encryption(_key),"Wrong Password");
+//   }
 
   ///@notice Reads Contract to find existing Contract.
   ///@dev
   ///@return
-  function checkHero(string memory _username, bytes32 key)
+  function checkHero(string memory _username, string memory _key)
   public
-  verifyName(_username)
   returns(bool){
+    bytes32 username = encryption(_username);
+    require (Hero[username].access,"Hero Doesn't Exist");
+    require (Hero[username].key == encryption(_key),"Wrong Password");
     emit welcome(_username);
     return true;
   }
