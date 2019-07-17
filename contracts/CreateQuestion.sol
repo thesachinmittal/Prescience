@@ -10,7 +10,7 @@ contract CreateQuestion {
   ///@param Question String
   ///@param reviewTime
   ///@param judgmentTime
-  function createQuery(string memory Question, uint reviewTime, uint judgmentTime) public{
+  function createQuery(sring memory topic, string memory Question,bytes32[] memory Docs, uint reviewTime, uint judgmentTime) public{
 
   }
 

@@ -15,6 +15,10 @@ contract SignUp {
   // ///@notice Owner's address
   // address public owner;     //owner of the contract
 
+  enum Access{
+    Open, Lock, Denied
+  }
+
   ///@notice Account Details
   struct Account{
     address account;        //Eth address linked to the registered account
