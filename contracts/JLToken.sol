@@ -6,13 +6,13 @@ import "./token/ERC20/ERC20Detailed.sol";
 contract JLToken is ERC20, ERC20Detailed {
 
 
-    constructor() ERC20Detailed("Justice", "JL", 18) public {
-        _mint(msg.sender, 10000);
-    }
-
-    // constructor(uint256 initialSupply) ERC20Detailed("Justice", "JL", 18) public {
-    //     _mint(msg.sender, initialSupply);
+    // constructor() ERC20Detailed("Justice", "JL", 18) public {
+    //     _mint(msg.sender, 10000);
     // }
+
+    constructor(uint256 initialSupply) ERC20Detailed("Justice", "JL", 18) public {
+        _mint(msg.sender, initialSupply);
+    }
 }
 
 

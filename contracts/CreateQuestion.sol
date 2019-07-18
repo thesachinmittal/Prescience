@@ -3,29 +3,18 @@ pragma solidity ^0.5.0;
 import "./Question.sol";
 
 contract CreateQuestion {
-  constructor() public {
-  }
+
+  address[] newContracts;
 
   ///@notice Question creation function
-  ///@param Question String
+  ///@param topic
+  ///@param desc
+  ///@param docs
   ///@param reviewTime
   ///@param judgmentTime
-  function createQuery(sring memory topic, string memory Question,bytes32[] memory Docs, uint reviewTime, uint judgmentTime) public{
+  function createQuery(string memory topic, string memory desc,string memory docs, uint256 reviewTime, uint256 judgmentTime) public{
+    address newContract = new Question(topic, desc, docs, reviewTime, judgementTime);
+    newContracts.push(newContract);
+    }
 
   }
-
-
-  //
-  //Helper Function
-  //
-
-
-  function createContract (bytes32 name) private {
-        address[] newContracts;
-
-        address newContract = new Contract(name);
-        //or
-        // Question number = new Question(arg1,arg2,arg3);
-        newContracts.push(newContract);
-    }
-}

@@ -2,14 +2,33 @@ pragma solidity ^0.5.0;
 
 
 contract Question {
-  constructor() public {
-  }
-    address[] newContracts;
+  bytes32 Topic;
+  bytes32 description;
+  bytes32 Docs;
+  uint JudgementTime;
+  uint WisdomTime;
 
-    constructor(bytes32 name) public {
-        address newContract = new Contract(name);
-        newContracts.push(newContract);
-    } 
+
+  constructor(string memory topic, string memory desc, string memory docs, uint256 reviewTime, uint256 investTime) public {
+    Topic = encryption(topic);
+    description = encryption(desc);
+    Docs = encryption(docs);
+    JudgementTime = reviewTime;
+    WisdomTime = investTime;
+  }
+
+  //
+  //Helper Function
+  //
+
+
+  function encryption(string memory _key) internal pure returns(bytes32) {
+	  return sha256(abi.encodePacked(_key));
+	}
+
+
+
+
 }
 
 // contract Contract {
