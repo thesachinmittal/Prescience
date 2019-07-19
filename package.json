@@ -1,0 +1,23 @@
+{
+  "name": "Justice-League",
+  "version": "1.0.0",
+  "description": "Final Project for Consensus Academy 2019",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanchaymittal/Justice-League.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanchaymittal/Justice-League/issues"
+  },
+  "homepage": "https://github.com/sanchaymittal/Justice-League#readme"
+}

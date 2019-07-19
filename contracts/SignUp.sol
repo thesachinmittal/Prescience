@@ -113,6 +113,11 @@ contract SignUp {
 	 return sha256(abi.encodePacked(_key));
 	}
 
+  function maxLength(string memory _str) private pure{
+    bytes memory convertedString = bytes(_str);
+    require(convertedString.length < 12," Username Exceeds the length ");
+  }
+
   ///@notice Entry Security deposit for interaction with Judgement Platform.
   ///@dev
   ///@param threshold minimum amount required to interact with platform.
