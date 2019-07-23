@@ -1,9 +1,14 @@
 pragma solidity ^0.5.0;
 
 // import "./ReleaseReview.sol";
+import "node_modules/openzeppelin-solidity/contracts/math/Math.sol";
+import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Voting{
   // The two choices for your vote
+  using SafeMath for uint;
+  using Math for uint;
+
 
     mapping (uint => uint) UpNonTechnical;
     mapping (uint => uint) DownNonTechnical;
@@ -22,7 +27,10 @@ contract Voting{
 
   // The actual votes and vote commits
   mapping (address => bytes32) voteCommits;
+  mapping (address => uint256) voteStake;
   mapping (bytes32 => Status) voteStatuses;
+  mapping (address => uint) vote;
+  mapping (uint => uint) pool;
 
     // Events used to log what's going on in the contract
     event logString(string);
@@ -43,6 +51,7 @@ contract Voting{
 
       // We are still in the committing period & the commit is new so add it
       voteCommits[msg.sender] = _voteCommit;
+      voteStake[msg.sender] = stakeAmount();
       voteStatuses[_voteCommit] = Status.Committed;
       emit newVoteCommit("Vote committed with the following hash:", _voteCommit);
     }
@@ -73,13 +82,30 @@ contract Voting{
         ++DownTechnical[downTechnical];
         ++UpNonTechnical[upNonTechnical];
         ++DownNonTechnical[downNonTechnical];
-        ++Choice[choice];
+        ++Choice[choice];                       // Count the result
+        pool[choice] += voteStake[msg.sender];  // total pool for both the side.
+        vote[msg.sender] = choice;
         voteStatuses[_voteCommit] = Status.Revealed;
     }
 
-    function count() view public{
-      require(block.timestamp > revealPhaseEndTime,"Let the reveal Period end first");
+    function count() public view {
+      require(block.timestamp > revealPhaseEndTime, "Let the reveal Period end first");
       // Final Phase started
+      uint winningPool = pool[0].max(pool[1]);
+      uint winner = Choice[0].max(Choice[1]);
       
+      
+      
+    }
+
+    
+
+    //
+    //helper function
+    //
+
+    function stakeAmount()
+    public payable returns(uint){
+      return msg.value;
     }
 }
