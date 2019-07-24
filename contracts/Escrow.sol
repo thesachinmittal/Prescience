@@ -1,3 +1,5 @@
+///@author Sanchay Mittal
+
 pragma solidity ^0.5.0;
 
 // import "node_modules/openzeppelin-solidity/contracts/math/Math.sol";
@@ -5,11 +7,14 @@ pragma solidity ^0.5.0;
 import "./SupportLib.sol";
 
 ///@title Escrow
-///@notice
+///@notice Unique
 contract Escrow{
 
   using SupportLib for uint256;
   uint constant amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
+
+  ///@notice Admin's address
+  address public owner;     //owner of the contract
 
 // MetaData
   bytes32 Topic;                        /**> Topic of Discussion*/
@@ -28,26 +33,21 @@ contract Escrow{
   uint256 public commitPhaseEndTime;
   uint256 public revealPhaseEndTime;
 
-
-  modifier minTime(uint256 time){
-    require(time > 20,"Increase the time Span");
-    _;
+  ///@notice Fallback function
+  ///@dev Funds Collection here.
+  function() external payable{
   }
-
 
   // Constructor used to set parameters for the this specific vote
 
-  constructor (string memory topic,
+  constructor (
+      string memory topic,
       string memory desc,
       string memory docs,
       uint256 _ReviewPhaseLengthInSeconds,
       uint256 _CommitPhaseLengthInSeconds,
-      uint256 _RevealPhaseLengthInSeconds)
-      public
-      minTime(_ReviewPhaseLengthInSeconds)
-      minTime(_CommitPhaseLengthInSeconds)
-      minTime(_RevealPhaseLengthInSeconds)
-      {
+      uint256 _RevealPhaseLengthInSeconds) public {
+    owner = msg.sender;
     Topic = encryption(topic);
     Description = encryption(desc);
     Docs = encryption(docs);
