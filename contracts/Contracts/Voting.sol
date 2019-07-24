@@ -1,20 +1,24 @@
 pragma solidity ^0.5.0;
 
 // import "./ReleaseReview.sol";
-// import "node_modules/openzeppelin-solidity/contracts/math/Math.sol";
+import "node_modules/openzeppelin-solidity/contracts/math/Math.sol";
 import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./BoolMath.sol";
 
 contract Voting{
   // The two choices for your vote
+  uint constant amount = 1 * 10**17;
   using SafeMath for uint256;
   using BoolMath for uint256;
+  using Math for uint256;
 
     mapping (uint256 => uint256) UpNonTechnical;
     mapping (uint256 => uint256) DownNonTechnical;
     mapping (uint256 => uint256) UpTechnical;
     mapping (uint256 => uint256) DownTechnical;
-    mapping (uint256 => uint256) Choice;
+
+    address payable winners;
+  
 
   // Information about the current status of the vote
   uint256 public reviewPhaseEndTime;
@@ -27,10 +31,10 @@ contract Voting{
 
   // The actual votes and vote commits
   mapping (address => bytes32) voteCommits;
-  mapping (address => uint256) voteStake;
   mapping (bytes32 => Status) voteStatuses;
   mapping (address => uint256) vote;
-  mapping (uint256 => uint256) pool;
+  mapping (uint256 => address payable[]) Choice;
+
 
     // Events used to log what's going on in the contract
     event logString(string);
@@ -51,7 +55,6 @@ contract Voting{
 
       // We are still in the committing period & the commit is new so add it
       voteCommits[msg.sender] = _voteCommit;
-      voteStake[msg.sender] = stakeAmount();
       voteStatuses[_voteCommit] = Status.Committed;
       emit newVoteCommit("Vote committed with the following hash:", _voteCommit);
     }
@@ -82,24 +85,31 @@ contract Voting{
         ++DownTechnical[downTechnical];
         ++UpNonTechnical[upNonTechnical];
         ++DownNonTechnical[downNonTechnical];
-        ++Choice[choice];                       // Count the result
-        pool[choice] += voteStake[msg.sender];  // total pool for both the side.
-        vote[msg.sender] = choice;
+        Choice[choice].push(msg.sender);
         voteStatuses[_voteCommit] = Status.Revealed;
     }
 
-    function count() public view {
+    function conclusion() public payable {
       require(block.timestamp > revealPhaseEndTime, "Let the reveal Period end first");
-      // Final Phase started
-      // bool winningPool = pool[0].max(pool[1]);
-      // bool winner = Choice[0].max(Choice[1]);
+      uint winner = majority();
+      uint limit = getCount(winner);
+      address payable[] memory array = Choice[winner];
+      for (uint i = 0; i < limit; i++ ){
+        array[i].transfer(amount);
+      }
     }
 
-    function result() public view returns(bool){
-      return pool[1].max(pool[0]);
+    function getCount(uint choice) public view returns(uint count) {
+    return Choice[choice].length;
     }
 
+    // function award(address payable _winner) public payable{
+    //   _winner.transfer(amount);
+    // }
     
+    function majority() private view returns(uint256){
+        return getCount(1).boolMax(getCount(0));
+    }
 
     //
     //helper function
