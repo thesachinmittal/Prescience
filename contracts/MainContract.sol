@@ -1,27 +1,28 @@
 ///@author Sanchay Mittal
-///@title SignUp
-///@notice Add Account of the users to the platform.
 
 pragma solidity ^0.5.0;
 
+
+///@title SignUp: Registration of Participants on platform.
+///@notice This contract allows to register a user by uniquely identifying with the help of username and address
 contract SignUp {
 
   /**
    *State Variables
    */
 
-  // ///@notice Owner's address
-  // address public owner;     //owner of the contract
+  ///@notice Owner's address
+  address public owner;     //owner of the contract
 
-  enum Access{
-    Open, Lock, Denied
+  enum Status{
+    Void, Linked, Lock, Denied
   }
 
   ///@notice Account Details
   struct Account{
     address account;        //Eth address linked to the registered account
-    bool access;            //if true the account is registered on platform
-    // uint256 Reputation;     //Reputation of a user.
+    Status status;            //if true the account is registered on platform
+    // uint256 Reputation;  //Reputation of a user.
     bytes32 key;
   }
 
@@ -29,8 +30,8 @@ contract SignUp {
   mapping (bytes32 => Account) Hero;
 
   ///@notice Fallback function
+  ///@dev Funds Collection here.
   function() external payable{
-    revert("Please try Again");
   }
 
 
@@ -45,15 +46,21 @@ contract SignUp {
    *Modifiers
    */
 
-  // ///@notice Checks the owner of the contract
-  // modifier checkOwner(){
-  //   require(msg.sender == owner,"Owner's Permission");
-  //   _;
-  // }
+  ///@notice Checks the owner of the contract
+  modifier checkOwner(){
+    require(msg.sender == owner,"Owner's Permission");
+    _;
+  }
 
   ///@notice Check if the username is registered or not.
   modifier checkName(bytes32 _username){
-    require (!Hero[_username].access,"Hero Exist, Please Choose another name");
+    require (Hero[_username].status == Status.Void,"Hero Exist, Please Choose another name");
+    _;
+  }
+  
+   modifier maxLength(string memory _str){
+    bytes memory convertedString = bytes(_str);
+    require(convertedString.length < 12," Username Exceeds the length ");
     _;
   }
 
@@ -69,15 +76,17 @@ contract SignUp {
     uint amountToRefund = msg.value - threshold;
     msg.sender.transfer(amountToRefund);
   }
+  
+
 
 
   //
   //Constructor
   //
 
-  // constructor() public {
-  //   owner = msg.sender;
-  // }
+  constructor() public {
+    owner = msg.sender;
+  }
 
   /**
    *Functions
@@ -85,10 +94,9 @@ contract SignUp {
 
   ///@notice addAccount registers new user to this platform
   ///@dev Register's Account which includes username(Character limit 12), Ethereum address
-  /* Account should made a threshold token transaction of JL tokens. */
   ///@param _name identification of user.
   ///@param _address Ethereum Address of the user.
-  function addAccount(string memory _name,address _address, string memory _key)
+  function addAccount(string memory _name,address _address, bytes32 _key)
   public
   checkName(encryption(_name))
   {
@@ -96,9 +104,8 @@ contract SignUp {
     // uint threshold = 1;
     // entryAmount(threshold);
     Hero[name].account = _address;
-    Hero[name].access = true;
-    Hero[name].key = encryption(_key);
-    Hero[name].access = true;
+    Hero[name].status = Status.Linked;
+    Hero[name].key = _key;
     emit SuccesfulRegistration(_name);
   }
 
@@ -106,20 +113,15 @@ contract SignUp {
   //
   //Helper Functions
   //
-
+  
   function encryption(string memory _key) internal pure returns(bytes32) {
 	 return sha256(abi.encodePacked(_key));
-	}
-
-  function maxLength(string memory _str) private pure{
-    bytes memory convertedString = bytes(_str);
-    require(convertedString.length < 12," Username Exceeds the length ");
   }
 
-  ///@notice Entry Security deposit for interaction with Judgement Platform.
-  ///@dev
-  ///@param threshold minimum amount required to interact with platform.
-  ///@return Success report
+  // ///@notice Entry Security deposit for interaction with Judgement Platform.
+  // ///@dev
+  // ///@param threshold minimum amount required to interact with platform.
+  // ///@return Success report
 //   function entryAmount(uint threshold)
 //   private
 //   checkValue(threshold)
@@ -127,10 +129,10 @@ contract SignUp {
 //     require(msg.value > threshold, "Funds Insufficient");
 //     msg.sender.transfer(threshold);
 //   }
-}
 
-contract LogIn is SignUp{
-
+/**
+ * LogIn Space
+ */ 
   event welcome(string indexed username);
 
 //   modifier verifyName(bytes32 _username){
@@ -149,7 +151,7 @@ contract LogIn is SignUp{
   public
   returns(bool){
     bytes32 username = encryption(_username);
-    require (Hero[username].access,"Hero Doesn't Exist");
+    require (Hero[username].status == Status.Linked,"Hero Doesn't Exist");
     require (Hero[username].key == encryption(_key),"Wrong Password");
     emit welcome(_username);
     return true;
