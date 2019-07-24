@@ -18,7 +18,7 @@ contract Voting{
     mapping (uint256 => uint256) DownTechnical;
 
     address payable winners;
-  
+
 
   // Information about the current status of the vote
   uint256 public reviewPhaseEndTime;
@@ -106,7 +106,7 @@ contract Voting{
     // function award(address payable _winner) public payable{
     //   _winner.transfer(amount);
     // }
-    
+
     function majority() private view returns(uint256){
         return getCount(1).boolMax(getCount(0));
     }
