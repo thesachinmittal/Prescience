@@ -57,7 +57,7 @@ contract SignUp {
     require (Hero[_username].status == Status.Void,"Hero Exist, Please Choose another name");
     _;
   }
-  
+
    modifier maxLength(string memory _str){
     bytes memory convertedString = bytes(_str);
     require(convertedString.length < 12," Username Exceeds the length ");
@@ -76,7 +76,7 @@ contract SignUp {
     uint amountToRefund = msg.value - threshold;
     msg.sender.transfer(amountToRefund);
   }
-  
+
 
 
 
@@ -99,6 +99,7 @@ contract SignUp {
   function addAccount(string memory _name,address _address, bytes32 _key)
   public
   checkName(encryption(_name))
+  maxLength(_name)
   {
     bytes32 name = encryption(_name);
     // uint threshold = 1;
@@ -110,10 +111,10 @@ contract SignUp {
   }
 
 
-  //
-  //Helper Functions
-  //
-  
+  /**
+   * Helper Functions
+   */
+
   function encryption(string memory _key) internal pure returns(bytes32) {
 	 return sha256(abi.encodePacked(_key));
   }
@@ -132,7 +133,7 @@ contract SignUp {
 
 /**
  * LogIn Space
- */ 
+ */
   event welcome(string indexed username);
 
 //   modifier verifyName(bytes32 _username){
@@ -149,6 +150,7 @@ contract SignUp {
   ///@return
   function checkHero(string memory _username, string memory _key)
   public
+  maxLength(_username)
   returns(bool){
     bytes32 username = encryption(_username);
     require (Hero[username].status == Status.Linked,"Hero Doesn't Exist");
