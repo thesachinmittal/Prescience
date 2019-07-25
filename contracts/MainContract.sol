@@ -9,7 +9,7 @@ import "./SupportLib.sol";
 ///@title Escrow
 ///@notice Unique
 contract Escrow{
-    
+
   using SupportLib for uint256;
   uint constant amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
 
@@ -32,14 +32,14 @@ contract Escrow{
   uint256 public reviewPhaseEndTime;
   uint256 public commitPhaseEndTime;
   uint256 public revealPhaseEndTime;
- 
+
   ///@notice Fallback function
   ///@dev Funds Collection here.
   function() external payable{
   }
 
   // Constructor used to set parameters for the this specific vote
-  
+
   constructor (
       string memory topic,
       string memory desc,
@@ -47,7 +47,7 @@ contract Escrow{
       uint256 _ReviewPhaseLengthInSeconds,
       uint256 _CommitPhaseLengthInSeconds,
       uint256 _RevealPhaseLengthInSeconds) public {
-    owner = msg.sender;     
+    owner = msg.sender;
     Topic = encryption(topic);
     Description = encryption(desc);
     Docs = encryption(docs);
@@ -132,7 +132,7 @@ contract Escrow{
     function encryption(string memory _key) internal pure returns(bytes32) {
 	 return sha256(abi.encodePacked(_key));
 	}
-	
+
     function getCount(uint choice) private view returns(uint count) {
     return Choice[choice].length;
     }
@@ -184,7 +184,7 @@ contract MainContract {
    * @param _ReviewPhaseLengthInSeconds Length of review period in seconds
    * @param _CommitPhaseLengthInSeconds Length of Commmit period in seconds
    * @param _RevealPhaseLengthInSeconds Length of reveal period in seconds
-   */ 
+   */
   function createQuery(
     string memory topic,
     string memory desc,
@@ -200,7 +200,7 @@ contract MainContract {
     newContracts[address(newContract)] = true;
     // D newD = (new D).value(amount)(arg);
     }
-    
+
     // function incentive(address payable _address) public payable{
     //     require(newContracts[_address] == true, "Invalid address");
     //     Escrow contractAddress = Escrow(_address);

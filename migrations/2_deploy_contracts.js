@@ -1,5 +1,10 @@
-var JLToken = artifacts.require("JLToken.js");
+var SupportLib = artifacts.require("SupportLib");
+var MainContract = artifacts.require("MainContract");
+
 
 module.exports = function(deployer){
-    deployer.deploy(JLToken, 10000);
+    deployer.deploy(SupportLib)
+    deployer.link(SupportLib, MainContract)
+    deployer.deploy(MainContract)
+
 };
