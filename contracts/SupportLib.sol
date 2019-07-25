@@ -8,4 +8,8 @@ library SupportLib{
       return a > b? 1 : 0 ;
     }
 
+   function encryption(string memory _key) internal pure returns(bytes32) {
+	 return sha256(abi.encodePacked(_key));
+	}
+
 }

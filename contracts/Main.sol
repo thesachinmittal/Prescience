@@ -10,7 +10,6 @@ import "./SupportLib.sol";
 ///@notice Unique
 contract Escrow{
 
-  using SupportLib for uint256;
   uint constant amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
 
   ///@notice Admin's address
@@ -48,9 +47,9 @@ contract Escrow{
       uint256 _CommitPhaseLengthInSeconds,
       uint256 _RevealPhaseLengthInSeconds) public {
     owner = msg.sender;
-    Topic = encryption(topic);
-    Description = encryption(desc);
-    Docs = encryption(docs);
+    Topic = SupportLib.encryption(topic);
+    Description = SupportLib.encryption(desc);
+    Docs = SupportLib.encryption(docs);
     reviewPhaseEndTime = block.timestamp + _ReviewPhaseLengthInSeconds;
     commitPhaseEndTime = block.timestamp + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
     revealPhaseEndTime = block.timestamp + _RevealPhaseLengthInSeconds + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
@@ -128,11 +127,6 @@ contract Escrow{
     //helper function
     //
 
-
-    function encryption(string memory _key) internal pure returns(bytes32) {
-	 return sha256(abi.encodePacked(_key));
-	}
-
     function getCount(uint choice) private view returns(uint count) {
     return Choice[choice].length;
     }
@@ -142,7 +136,7 @@ contract Escrow{
     // }
 
     function majority() private view returns(uint256){
-        return getCount(1).boolMax(getCount(0));
+        return SupportLib.boolMax(getCount(1), getCount(0));
     }
 
 //   function stakeAmount private()
@@ -151,7 +145,7 @@ contract Escrow{
 //     }
 }
 
-contract MainContract {
+contract Main {
 
   /**
    *State Variables
