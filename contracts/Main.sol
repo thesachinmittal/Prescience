@@ -40,7 +40,7 @@ contract Main {
    * @param _CommitPhaseLengthInSeconds Length of Commmit period in seconds
    * @param _RevealPhaseLengthInSeconds Length of reveal period in seconds
    */
-  function createQuery(
+  function free(
     string memory topic,
     string memory desc,
     string memory docs,
@@ -51,14 +51,31 @@ contract Main {
     minTime(_ReviewPhaseLengthInSeconds)
     minTime(_CommitPhaseLengthInSeconds)
     minTime(_RevealPhaseLengthInSeconds){
-    Escrow newContract = new Escrow(topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
+    FreeEvaluation newContract = new FreeEvaluation(topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
     newContracts[address(newContract)] = true;
     // D newD = (new D).value(amount)(arg);
     }
 
+    function incentive(
+    string memory topic,
+    string memory desc,
+    string memory docs,
+    uint256 _ReviewPhaseLengthInSeconds,
+    uint256 _CommitPhaseLengthInSeconds,
+    uint256 _RevealPhaseLengthInSeconds)
+    public
+    minTime(_ReviewPhaseLengthInSeconds)
+    minTime(_CommitPhaseLengthInSeconds)
+    minTime(_RevealPhaseLengthInSeconds){
+    IncentiveEvaluation newContract = new IncentiveEvaluation(topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
+    newContracts[address(newContract)] = true;
+    // D newD = (new D).value(amount)(arg);
+    }
+
+
     // function incentive(address payable _address) public payable{
     //     require(newContracts[_address] == true, "Invalid address");
-    //     Escrow contractAddress = Escrow(_address);
+    //     Evaluation contractAddress = Evaluation(_address);
     //     contractAdress;
     // }
 
