@@ -10,6 +10,8 @@ import "./SupportLib.sol";
 ///@notice Unique
 contract IncentiveEvaluation{
 
+  uint256 public threshold;
+
   uint constant amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
 
   ///@notice Admin's address
@@ -45,7 +47,8 @@ contract IncentiveEvaluation{
       string memory docs,
       uint256 _ReviewPhaseLengthInSeconds,
       uint256 _CommitPhaseLengthInSeconds,
-      uint256 _RevealPhaseLengthInSeconds) public {
+      uint256 _RevealPhaseLengthInSeconds,
+      uint256 _threshold) public {
     owner = msg.sender;
     Topic = SupportLib.encryption(topic);
     Description = SupportLib.encryption(desc);
@@ -53,6 +56,7 @@ contract IncentiveEvaluation{
     reviewPhaseEndTime = block.timestamp + _ReviewPhaseLengthInSeconds;
     commitPhaseEndTime = block.timestamp + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
     revealPhaseEndTime = block.timestamp + _RevealPhaseLengthInSeconds + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
+    threshold = _threshold;
   }
 
 

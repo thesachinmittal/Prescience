@@ -51,7 +51,8 @@ contract Main {
     minTime(_ReviewPhaseLengthInSeconds)
     minTime(_CommitPhaseLengthInSeconds)
     minTime(_RevealPhaseLengthInSeconds){
-    FreeEvaluation newContract = new FreeEvaluation(topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
+    FreeEvaluation newContract = new FreeEvaluation(topic,
+     desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
     newContracts[address(newContract)] = true;
     // D newD = (new D).value(amount)(arg);
     }
@@ -62,12 +63,14 @@ contract Main {
     string memory docs,
     uint256 _ReviewPhaseLengthInSeconds,
     uint256 _CommitPhaseLengthInSeconds,
-    uint256 _RevealPhaseLengthInSeconds)
+    uint256 _RevealPhaseLengthInSeconds,
+    uint256 threshold)
     public
     minTime(_ReviewPhaseLengthInSeconds)
     minTime(_CommitPhaseLengthInSeconds)
     minTime(_RevealPhaseLengthInSeconds){
-    IncentiveEvaluation newContract = new IncentiveEvaluation(topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
+    IncentiveEvaluation newContract = new IncentiveEvaluation(
+      topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, threshold);
     newContracts[address(newContract)] = true;
     // D newD = (new D).value(amount)(arg);
     }

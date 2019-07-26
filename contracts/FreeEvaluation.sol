@@ -10,9 +10,7 @@ import "./SupportLib.sol";
 ///@notice Unique
 contract FreeEvaluation{
 
-  uint constant amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
-
-  ///@notice Admin's address
+ ///@notice Admin's address
   address public owner;     //owner of the contract
 
 // MetaData
@@ -71,6 +69,7 @@ contract FreeEvaluation{
     event logString(string);
     event newVoteCommit(string, bytes32);
     event voteWinner(string, string);
+    event voteWinnerCount(uint, uint);
 
     function commitVote(bytes32 _voteCommit) public{
       require(block.timestamp > reviewPhaseEndTime, "Wait for review period to end ");
@@ -116,10 +115,8 @@ contract FreeEvaluation{
       require(block.timestamp > revealPhaseEndTime, "Let the reveal Period end first");
       uint winner = majority();
       uint limit = getCount(winner);
-      address payable[] memory array = Choice[winner];
-      for (uint i = 0; i < limit; i++ ){
-        array[i].transfer(amount);
-      }
+      emit voteWinnerCount(winner, limit);
+
     }
 
 
