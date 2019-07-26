@@ -1,8 +1,10 @@
+pragma solidity ^0.5.0;
+
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
 import "../contracts/SupportLib.sol";
 
-contract SupportLib{
+contract TestSupportLib{
     SupportLib support = SupportLib(DeployedAddresses.SupportLib());
     function testBoolMaxRightSide() public{
     uint returnResult = support.boolMax(60,50);

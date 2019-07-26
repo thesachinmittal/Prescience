@@ -12163,10 +12163,16 @@
       "links": {},
       "address": "0x3B43cBB30db56126427B64b998F1E111d9cA5556",
       "transactionHash": "0x69ec9cf2038babdac5dfb0da586a6c1d492cb1580d488a4bc8267fadc7256c1b"
+    },
+    "1564158030819": {
+      "events": {},
+      "links": {},
+      "address": "0x6c25C9AE5c4D3a6022323a22d5e95894552aBcDE",
+      "transactionHash": "0xc33d8b0a2b9567f266196bd6cbd38eb557b5631adeabad9e37c94840ed0a3156"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-25T06:25:11.365Z",
+  "updatedAt": "2019-07-26T16:20:53.620Z",
   "devdoc": {
     "methods": {
       "createQuery(string,string,string,uint256,uint256,uint256)": {

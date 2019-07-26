@@ -15,7 +15,7 @@ contract IncentiveEvaluation{
   uint constant amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
 
   ///@notice Admin's address
-  address public owner;     //owner of the contract
+  address payable public owner;     //owner of the contract
 
 // MetaData
   bytes32 Topic;                        /**> Topic of Discussion*/
@@ -33,6 +33,31 @@ contract IncentiveEvaluation{
   uint256 public reviewPhaseEndTime;
   uint256 public commitPhaseEndTime;
   uint256 public revealPhaseEndTime;
+
+
+  enum Status{
+    Committed, Revealed, EndGame
+  }
+
+  // The actual votes and vote commits
+  mapping (address => bytes32) voteCommits;
+  mapping (bytes32 => Status) voteStatuses;
+  mapping (address => uint256) vote;
+  mapping (uint256 => address payable[]) Choice;
+  Status Period;
+
+
+    // Events used to log what's going on in the contract
+    event logString(string);
+    event newVoteCommit(string, bytes32);
+    event voteWinner(string, string);
+    event TheEnd(address, uint256);
+
+
+    modifier onlyOwner(){
+      require(owner == msg.sender,"Onwer's permission is required");
+      _;
+    }
 
   ///@notice Fallback function
   ///@dev Funds Collection here.
@@ -60,29 +85,16 @@ contract IncentiveEvaluation{
   }
 
 
-  enum Status{
-    Committed, Revealed
-  }
-
-  // The actual votes and vote commits
-  mapping (address => bytes32) voteCommits;
-  mapping (bytes32 => Status) voteStatuses;
-  mapping (address => uint256) vote;
-  mapping (uint256 => address payable[]) Choice;
-
-
-    // Events used to log what's going on in the contract
-    event logString(string);
-    event newVoteCommit(string, bytes32);
-    event voteWinner(string, string);
 
     function commitVote(bytes32 _voteCommit) public{
       require(block.timestamp > reviewPhaseEndTime, "Wait for review period to end ");
       require(block.timestamp < commitPhaseEndTime, "Only allow commits during committing period");
 
       // We are still in the committing period & the commit is new so add it
+
       voteCommits[msg.sender] = _voteCommit;
       voteStatuses[_voteCommit] = Status.Committed;
+
       emit newVoteCommit("Vote committed with the following hash:", _voteCommit);
     }
 
@@ -124,6 +136,15 @@ contract IncentiveEvaluation{
       for (uint i = 0; i < limit; i++ ){
         array[i].transfer(amount);
       }
+      Period = Status.EndGame;
+    }
+
+    function endProposal() public payable onlyOwner{
+      require(block.timestamp > revealPhaseEndTime, "Let the reveal Period end first");
+      require(Period == Status.EndGame,"End of the Evaluation");
+      uint remainder = address(this).balance;
+      owner.transfer(remainder);
+      emit TheEnd(owner, remainder);
     }
 
 
