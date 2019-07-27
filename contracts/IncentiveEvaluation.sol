@@ -12,7 +12,7 @@ contract IncentiveEvaluation{
 
   uint256 public threshold;
 
-  uint constant amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
+  uint constant public amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
 
   ///@notice Admin's address
   address payable public owner;     //owner of the contract

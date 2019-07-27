@@ -6,9 +6,10 @@ pragma solidity ^0.5.0;
 // import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./SupportLib.sol";
 
-///@title FreeEvaluation
-///@notice Unique
+///@title FreeEvaluation: Contract allows participants to write their review and vote for the success.
+///@notice Neither Entry Fee is required nor crypto incentive is awarded to participant by proposal owner.
 contract FreeEvaluation{
+
 
  ///@notice Admin's address
   address public owner;     //owner of the contract
@@ -29,6 +30,23 @@ contract FreeEvaluation{
   uint256 public reviewPhaseEndTime;
   uint256 public commitPhaseEndTime;
   uint256 public revealPhaseEndTime;
+
+  enum Status{
+    Committed, Revealed
+  }
+
+  // The actual votes and vote commits
+  mapping (address => bytes32) voteCommits;
+  mapping (bytes32 => Status) voteStatuses;
+  mapping (address => uint256) vote;
+  mapping (uint256 => address payable[]) Choice;
+
+  // Events used to log what's going on in the contract
+    event logString(string);
+    event newVoteCommit(string, bytes32);
+    event voteWinner(string, string);
+    event voteWinnerCount(uint, uint);
+
 
   ///@notice Fallback function
   ///@dev Funds Collection here.
@@ -53,24 +71,7 @@ contract FreeEvaluation{
     revealPhaseEndTime = block.timestamp + _RevealPhaseLengthInSeconds + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
   }
 
-
-  enum Status{
-    Committed, Revealed
-  }
-
-  // The actual votes and vote commits
-  mapping (address => bytes32) voteCommits;
-  mapping (bytes32 => Status) voteStatuses;
-  mapping (address => uint256) vote;
-  mapping (uint256 => address payable[]) Choice;
-
-
-    // Events used to log what's going on in the contract
-    event logString(string);
-    event newVoteCommit(string, bytes32);
-    event voteWinner(string, string);
-    event voteWinnerCount(uint, uint);
-
+    
     function commitVote(bytes32 _voteCommit) public{
       require(block.timestamp > reviewPhaseEndTime, "Wait for review period to end ");
       require(block.timestamp < commitPhaseEndTime, "Only allow commits during committing period");

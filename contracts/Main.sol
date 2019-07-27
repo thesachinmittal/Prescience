@@ -11,6 +11,11 @@ contract Main {
   /**
    *State Variables
    */
+  // Max Length of review, voting and reveal period.
+  uint256 constant public MAX_TIME_PERIOD = 10 * 24 * 60 * 60;    // Limit of 10 Days
+
+  // Max Limit for Security Deposit.
+  uint256 constant public MAX_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 18;         // 1 ether
 
   ///@notice Owner's address
   address public owner;     //owner of the contract
@@ -19,6 +24,16 @@ contract Main {
 
   modifier minTime(uint256 time){
     require(time > 20,"Increase the time Span");
+    _;
+  }
+
+  modifier checkTimeLimit(uint256 time){
+    require(time < MAX_TIME_PERIOD,"Check the time period duration");
+    _;
+  }
+
+  modifier checkSecurityDeposit(uint256 _securityDeposit){
+    require(_securityDeposit <= MAX_SECURITY_DEPOSIT_ENTRY_FEE, "Entry Fee is too high");
     _;
   }
 
@@ -50,7 +65,11 @@ contract Main {
     public
     minTime(_ReviewPhaseLengthInSeconds)
     minTime(_CommitPhaseLengthInSeconds)
-    minTime(_RevealPhaseLengthInSeconds){
+    minTime(_RevealPhaseLengthInSeconds)
+    checkTimeLimit(_ReviewPhaseLengthInSeconds)
+    checkTimeLimit(_CommitPhaseLengthInSeconds)
+    checkTimeLimit(_CommitPhaseLengthInSeconds)
+    {
     FreeEvaluation newContract = new FreeEvaluation(topic,
      desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
     newContracts[address(newContract)] = true;
@@ -64,15 +83,18 @@ contract Main {
     uint256 _ReviewPhaseLengthInSeconds,
     uint256 _CommitPhaseLengthInSeconds,
     uint256 _RevealPhaseLengthInSeconds,
-    uint256 threshold)
+    uint256 _securityDeposit)
     public
     minTime(_ReviewPhaseLengthInSeconds)
     minTime(_CommitPhaseLengthInSeconds)
-    minTime(_RevealPhaseLengthInSeconds){
+    minTime(_RevealPhaseLengthInSeconds)
+    checkTimeLimit(_ReviewPhaseLengthInSeconds)
+    checkTimeLimit(_CommitPhaseLengthInSeconds)
+    checkTimeLimit(_CommitPhaseLengthInSeconds)
+    checkSecurityDeposit(_securityDeposit){
     IncentiveEvaluation newContract = new IncentiveEvaluation(
-      topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, threshold);
+      topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
     newContracts[address(newContract)] = true;
-    // D newD = (new D).value(amount)(arg);
     }
 
 

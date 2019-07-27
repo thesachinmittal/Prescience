@@ -31,8 +31,8 @@ contract TestSupportLib{
     function testEncryption() public{
         bytes32 returnResult = support.encryption("testing");
 
-        bytes32 expected= "0x";             // SHA256 Hash of abi.encoded string("testing")
-        Assert.equal(returnResult,expected, "The hashing should be same" );
+        bytes32 expected = address(0x00);             // SHA256 Hash of abi.encoded string("testing")
+        Assert.equal(returnResult,expected, "The hashing should be same");
     }
 
     // MetaCoin meta = new MetaCoin();
