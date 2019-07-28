@@ -56,13 +56,14 @@ contract FreeEvaluation{
   // Constructor used to set parameters for the this specific vote
 
   constructor (
-      string memory topic,
-      string memory desc,
-      string memory docs,
-      uint256 _ReviewPhaseLengthInSeconds,
-      uint256 _CommitPhaseLengthInSeconds,
-      uint256 _RevealPhaseLengthInSeconds) public {
-    owner = msg.sender;
+    address _owner,
+    string memory topic,
+    string memory desc,
+    string memory docs,
+    uint256 _ReviewPhaseLengthInSeconds,
+    uint256 _CommitPhaseLengthInSeconds,
+    uint256 _RevealPhaseLengthInSeconds) public {
+    owner = _owner;
     Topic = SupportLib.encryption(topic);
     Description = SupportLib.encryption(desc);
     Docs = SupportLib.encryption(docs);

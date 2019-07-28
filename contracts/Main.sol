@@ -19,6 +19,9 @@ contract Main {
   // Max Limit for Security Deposit.
   uint256 constant public MAX_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 18;         // 1 ether
 
+  // Pause
+  bool public contractPaused = false;
+
   ///@notice Owner's address
   address public owner;     //owner of the contract
   mapping(address => bool) newContracts;
@@ -36,6 +39,16 @@ contract Main {
 
   modifier checkSecurityDeposit(uint256 _securityDeposit){
     require(_securityDeposit <= MAX_SECURITY_DEPOSIT_ENTRY_FEE, "Entry Fee is too high");
+    _;
+  }
+
+  modifier onlyOwner(){
+    require(owner == msg.sender,"Owner's permission is required");
+    _;
+  }
+
+    modifier checkIfPaused() {
+    require(contractPaused == false," Contract is paused right now ");
     _;
   }
 
@@ -71,8 +84,10 @@ contract Main {
     checkTimeLimit(_ReviewPhaseLengthInSeconds)
     checkTimeLimit(_CommitPhaseLengthInSeconds)
     checkTimeLimit(_CommitPhaseLengthInSeconds)
+    checkIfPaused()
     {
-    FreeEvaluation newContract = new FreeEvaluation(topic,
+    address _owner = msg.sender;
+    FreeEvaluation newContract = new FreeEvaluation(_owner, topic,
      desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
     newContracts[address(newContract)] = true;
     // D newD = (new D).value(amount)(arg);
@@ -93,12 +108,22 @@ contract Main {
     checkTimeLimit(_ReviewPhaseLengthInSeconds)
     checkTimeLimit(_CommitPhaseLengthInSeconds)
     checkTimeLimit(_CommitPhaseLengthInSeconds)
-    checkSecurityDeposit(_securityDeposit){
+    checkSecurityDeposit(_securityDeposit)
+    checkIfPaused()
+    {
+      address payable _owner = msg.sender;
     IncentiveEvaluation newContract = new IncentiveEvaluation(
-      topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
+      _owner, topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
     newContracts[address(newContract)] = true;
     }
 
+
+  // The contract owner can pause all functionality
+    function circuitBreaker() public
+    onlyOwner
+    checkIfPaused{
+    contractPaused = true;
+  }
 
     // function incentive(address payable _address) public payable{
     //     require(newContracts[_address] == true, "Invalid address");

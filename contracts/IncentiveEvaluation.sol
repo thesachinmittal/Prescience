@@ -9,13 +9,14 @@ import "./SupportLib.sol";
 ///@title IncentiveEvaluation
 ///@notice Unique
 contract IncentiveEvaluation{
+  ///@notice Admin's address
+  address payable public owner;     //owner of the contract
 
   uint256 public threshold;
 
   uint constant public amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
 
-  ///@notice Admin's address
-  address payable public owner;     //owner of the contract
+
 
 // MetaData
   bytes32 Topic;                        /**> Topic of Discussion*/
@@ -67,6 +68,7 @@ contract IncentiveEvaluation{
   // Constructor used to set parameters for the this specific vote
 
   constructor (
+      address payable _owner,
       string memory topic,
       string memory desc,
       string memory docs,
@@ -74,7 +76,7 @@ contract IncentiveEvaluation{
       uint256 _CommitPhaseLengthInSeconds,
       uint256 _RevealPhaseLengthInSeconds,
       uint256 _threshold) public {
-    owner = msg.sender;
+    owner = _owner;
     Topic = SupportLib.encryption(topic);
     Description = SupportLib.encryption(desc);
     Docs = SupportLib.encryption(docs);
