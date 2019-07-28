@@ -23325,7 +23325,7 @@
 16160 verbose afterAdd /home/sanchaymittal/.npm/binary-extensions/1.13.1/package/package.json not in flight; writing
 16161 verbose afterAdd /home/sanchaymittal/.npm/binary-extensions/1.13.1/package/package.json written
 16162 silly loadAllDepsIntoIdealTree Finishing
-16163 silly idealTree:prePrune Justice-League@1.0.0
+16163 silly idealTree:prePrune Prescience@1.0.0
 16163 silly idealTree:prePrune ├── @webassemblyjs/ast@1.8.5
 16163 silly idealTree:prePrune ├── @webassemblyjs/floating-point-hex-parser@1.8.5
 16163 silly idealTree:prePrune ├── @webassemblyjs/helper-api-error@1.8.5
@@ -23788,9 +23788,9 @@
 16163 silly idealTree:prePrune ├── y18n@4.0.0
 16163 silly idealTree:prePrune └── yallist@3.0.3
 16164 silly loadIdealTree Finishing
-16165 silly currentTree Justice-League@1.0.0
+16165 silly currentTree Prescience@1.0.0
 16165 silly currentTree └── openzeppelin-solidity@2.3.0
-16166 silly idealTree Justice-League@1.0.0
+16166 silly idealTree Prescience@1.0.0
 16166 silly idealTree ├── @webassemblyjs/ast@1.8.5
 16166 silly idealTree ├── @webassemblyjs/floating-point-hex-parser@1.8.5
 16166 silly idealTree ├── @webassemblyjs/helper-api-error@1.8.5
@@ -24254,7 +24254,7 @@
 16166 silly idealTree └── yallist@3.0.3
 16167 silly generateActionsToTake Starting
 16168 silly install generateActionsToTake
-16169 warn checkPermissions Missing write access to /home/sanchaymittal/Justice-League/node_modules
+16169 warn checkPermissions Missing write access to /home/sanchaymittal/Prescience/node_modules
 16170 silly rollbackFailedOptional Starting
 16171 silly rollbackFailedOptional Finishing
 16172 silly runTopLevelLifecycles Starting
@@ -24263,21 +24263,21 @@
 16175 warn optional Skipping failed optional dependency /chokidar/fsevents:
 16176 warn notsup Not compatible with your operating system or architecture: fsevents@1.2.9
 16177 warn babel-loader@8.0.6 requires a peer of @babel/core@^7.0.0 but none was installed.
-16178 verbose stack Error: EACCES: permission denied, access '/home/sanchaymittal/Justice-League/node_modules'
-16179 verbose cwd /home/sanchaymittal/Justice-League
+16178 verbose stack Error: EACCES: permission denied, access '/home/sanchaymittal/Prescience/node_modules'
+16179 verbose cwd /home/sanchaymittal/Prescience
 16180 error Linux 4.18.0-25-generic
 16181 error argv "/usr/bin/node" "/usr/bin/npm" "i" "-D" "webpack" "react" "react-dom" "babel-core" "babel-loader" "babel-preset-react" "babel-preset-env" "css-loader" "style-loader" "json-loader" "web3@0.20.0"
 16182 error node v8.10.0
 16183 error npm  v3.5.2
-16184 error path /home/sanchaymittal/Justice-League/node_modules
+16184 error path /home/sanchaymittal/Prescience/node_modules
 16185 error code EACCES
 16186 error errno -13
 16187 error syscall access
-16188 error Error: EACCES: permission denied, access '/home/sanchaymittal/Justice-League/node_modules'
-16188 error  { Error: EACCES: permission denied, access '/home/sanchaymittal/Justice-League/node_modules'
+16188 error Error: EACCES: permission denied, access '/home/sanchaymittal/Prescience/node_modules'
+16188 error  { Error: EACCES: permission denied, access '/home/sanchaymittal/Prescience/node_modules'
 16188 error   errno: -13,
 16188 error   code: 'EACCES',
 16188 error   syscall: 'access',
-16188 error   path: '/home/sanchaymittal/Justice-League/node_modules' }
+16188 error   path: '/home/sanchaymittal/Prescience/node_modules' }
 16189 error Please try running this command again as root/Administrator.
 16190 verbose exit [ -13, true ]

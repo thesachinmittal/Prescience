@@ -5,7 +5,8 @@ import "truffle/DeployedAddresses.sol";
 import "../contracts/SupportLib.sol";
 
 contract TestSupportLib{
-    SupportLib support = SupportLib(DeployedAddresses.SupportLib());
+    SupportLib support = new SupportLib();
+
     function testBoolMaxRightSide() public{
     uint returnResult = support.boolMax(60,50);
 

@@ -14,6 +14,8 @@ contract Main {
   // Max Length of review, voting and reveal period.
   uint256 constant public MAX_TIME_PERIOD = 10 * 24 * 60 * 60;    // Limit of 10 Days
 
+  uint256 constant public MIN_TIME_PERIOD  = 1 * 1 * 1 * 20;       // Limit of 20 Seconds
+
   // Max Limit for Security Deposit.
   uint256 constant public MAX_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 18;         // 1 ether
 
@@ -23,12 +25,12 @@ contract Main {
 
 
   modifier minTime(uint256 time){
-    require(time > 20,"Increase the time Span");
+    require(time >= MIN_TIME_PERIOD,"Increase the time Span");
     _;
   }
 
   modifier checkTimeLimit(uint256 time){
-    require(time < MAX_TIME_PERIOD,"Check the time period duration");
+    require(time <= MAX_TIME_PERIOD,"Check the time period duration");
     _;
   }
 

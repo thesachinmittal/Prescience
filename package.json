@@ -1,5 +1,5 @@
 {
-  "name": "Justice-League",
+  "name": "Prescience",
   "version": "1.0.0",
   "description": "Final Project for Consensus Academy 2019",
   "main": "truffle-config.js",
@@ -11,13 +11,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sanchaymittal/Justice-League.git"
+    "url": "git+https://github.com/sanchaymittal/Prescience.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sanchaymittal/Justice-League/issues"
+    "url": "https://github.com/sanchaymittal/Prescience/issues"
   },
-  "homepage": "https://github.com/sanchaymittal/Justice-League#readme"
+  "homepage": "https://github.com/sanchaymittal/Prescience#readme"
 }
