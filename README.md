@@ -3,15 +3,17 @@
 
 >Author: Sanchay Mittal
 
+## What does your project do?
+## How to set it up
+## Devlopement
 
 
 ## Evaluation checklist
 
 - [x] README.md
-- [ ] [mythril](https://github.com/ConsenSys/mythril) security audit
 - [ ] Screen recording [!!]
 - [ ] Truffle project - compile, migrate, test
-- [x] Commented project
+- [x] Smart Contract Commented
 - [x] Library use
 - [ ] Local development interface
     - [ ] Displays the current ETH Account
@@ -24,9 +26,9 @@
 - [ ] Project includes a file called design_pattern_desicions.md / at least 2 implemented
 - [x] avoiding_common_attacks.md and explains at least 3 attacks and how it mitigates
 - [ ] deployed_addresses.txt that indicates contract address on testnet
-- [ ] IPFS
 - [ ] upgradeable design pattern
 - [ ] One contract written in Vyper or LLL
+- [ ] IPFS
 - [ ] uPort
 - [ ] ENS
 - [ ] Oracle

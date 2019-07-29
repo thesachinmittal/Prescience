@@ -16,6 +16,8 @@ contract IncentiveEvaluation{
 
   uint constant public amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
 
+  uint winner;
+
 
 
 // MetaData
@@ -34,18 +36,22 @@ contract IncentiveEvaluation{
   uint256 public reviewPhaseEndTime;
   uint256 public commitPhaseEndTime;
   uint256 public revealPhaseEndTime;
-
+  uint256 public rewardPhaseEndTime;
 
   enum Status{
-    Committed, Revealed, EndGame
+    Committed, Revealed
+  }
+  enum Period{
+    Evaluation, EndGame
   }
 
   // The actual votes and vote commits
   mapping (address => bytes32) voteCommits;
   mapping (bytes32 => Status) voteStatuses;
   mapping (address => uint256) vote;
-  mapping (uint256 => address payable[]) Choice;
-  Status Period;
+  mapping (uint256 => address[]) Choice;
+  mapping (address => bool) Redeem;
+  Period public period = Period.Evaluation;
 
 
     // Events used to log what's going on in the contract
@@ -53,6 +59,7 @@ contract IncentiveEvaluation{
     event newVoteCommit(string, bytes32);
     event voteWinner(string, string);
     event TheEnd(address, uint256);
+    event WinnerIsHere(address _winner);
 
 
     modifier onlyOwner(){
@@ -89,8 +96,8 @@ contract IncentiveEvaluation{
 
 
     function commitVote(bytes32 _voteCommit) public{
-      require(block.timestamp > reviewPhaseEndTime, "Wait for review period to end ");
-      require(block.timestamp < commitPhaseEndTime, "Only allow commits during committing period");
+      require(now > reviewPhaseEndTime, "Wait for review period to end ");
+      require(now < commitPhaseEndTime, "Only allow commits during committing period");
 
       // We are still in the committing period & the commit is new so add it
 
@@ -108,8 +115,8 @@ contract IncentiveEvaluation{
       uint256 choice,
       string memory salt)
       public{
-        require(block.timestamp > commitPhaseEndTime, "Please Only reveal votes after committing period is over");
-        require(block.timestamp < revealPhaseEndTime, " Only allowed During the reveal period");
+        require(now > commitPhaseEndTime, "Please Only reveal votes after committing period is over");
+        require(now < revealPhaseEndTime, " Only allowed During the reveal period");
 
         // FIRST: Verify the vote & commit is valid
         bytes32 _voteCommit = voteCommits[msg.sender];
@@ -127,23 +134,31 @@ contract IncentiveEvaluation{
         ++UpNonTechnical[upNonTechnical];
         ++DownNonTechnical[downNonTechnical];
         Choice[choice].push(msg.sender);
+        vote[msg.sender] = choice;
         voteStatuses[_voteCommit] = Status.Revealed;
     }
 
-    function conclusion() public payable {
-      require(block.timestamp > revealPhaseEndTime, "Let the reveal Period end first");
-      uint winner = majority();
-      uint limit = getCount(winner);
-      address payable[] memory array = Choice[winner];
-      for (uint i = 0; i < limit; i++ ){
-        array[i].transfer(amount);
-      }
-      Period = Status.EndGame;
+    function conclusion(uint256 _reviewEndTime) public onlyOwner{
+      require(now > revealPhaseEndTime, "Let the reveal Period end first");
+      require(period == Period.Evaluation, "Evalaution is done");
+      winner = majority();
+      rewardPhaseEndTime = block.timestamp + _reviewEndTime;
+      period = Period.EndGame;
+    }
+
+    function reward() public payable{
+      require(period == Period.EndGame,"It's Done");
+      require(now < rewardPhaseEndTime,"You are too late");
+      require(vote[msg.sender] == winner, "You aren't the winner ");
+      require(Redeem[msg.sender] == false, "You have redeem your reward");
+      Redeem[msg.sender] = true;
+      msg.sender.transfer(amount);
+      emit WinnerIsHere(msg.sender);
     }
 
     function endProposal() public payable onlyOwner{
-      require(block.timestamp > revealPhaseEndTime, "Let the reveal Period end first");
-      require(Period == Status.EndGame,"End of the Evaluation");
+      require(now > rewardPhaseEndTime, "Let the reward Period end first");
+      require(period == Period.EndGame,"End of the Evaluation");
       uint remainder = address(this).balance;
       owner.transfer(remainder);
       emit TheEnd(owner, remainder);
@@ -163,7 +178,7 @@ contract IncentiveEvaluation{
     // }
 
     function majority() private view returns(uint256){
-        return SupportLib.boolMax(getCount(1), getCount(0));
+        return SupportLib.boolMax(getCount(1), getCount(2));
     }
 
 //   function stakeAmount private()

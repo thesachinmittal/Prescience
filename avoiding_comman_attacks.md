@@ -32,33 +32,6 @@ The Voting mechanism here is intended to harnesses the "Wisdom of Crowd". Three 
 
 If any of these fails to apply, it could result in many cognitive biases negatively impact its efficacy, and lead to undesirable consequences such as bandwagoning and groupthink.
 
-## Forcibly Sending Ether to a Contract
-As a `selfdestruct` function does not triggers `callback` function of a contract, a malicious agent can set the address of a vulnearble contract as `selfdestruct` target address, where funds are sent after destroying a contract. If contract logic would allow disallow a function to be called by using its `balance`, can allow malicious agents to send ether and access the disallowed function. 
+## Circuit Breaker
 
-To avoid this attack vector, the researchDAO contract does not uses `balance`, instead using storage variables to keep track of balances in contract logic.  
-
-```
-struct Member {
-    uint256 shares;         // rDAO voting shares - voting power
-    uint256 contribution;   // Checking who offered how much when joining
-    bool exists;            // General switch to indicate if an address is already a member
-}
-mapping(address => Member) public members;   // Storing member details in a mapping
-```
-## Gas Limit DoS on a Contract via Unbounded Operations
-Contract that has unforseeable long loops can suffer from gas limit problems. If a payout function for example would loop across unknown lenght of addresses, it may be multiple blocks in lenght. 
-
-Example:
-
-```
-function payOut() {
-    uint256 i = nextPayeeIndex;
-    while (i < payees.length && msg.gas > 200000) {
-      payees[i].addr.send(payees[i].value);
-      i++;
-    }
-    nextPayeeIndex = i;
-}
-```
-To avoid these pitfalls the researchDAO contract `does not include any looping functions` and all payouts happen to a fixed number of addresses for every execution.
-
+The contract owner is able to pause/unpause any action on the contract as an emergency stop-gap. As of right now, that does in fact mean that games can expire while the contract is paused.
