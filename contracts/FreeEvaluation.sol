@@ -15,9 +15,9 @@ contract FreeEvaluation{
   address public owner;     //owner of the contract
 
 // MetaData
-  bytes32 Topic;                        /**> Topic of Discussion*/
-  bytes32 Description;                  /**> Discription of technology*/
-  bytes32 Docs;                         /**> Docs and other additional materials uploaded*/
+  string Topic;                        /**> Topic of Discussion*/
+  string Description;                  /**> Discription of technology*/
+  string Docs;                         /**> Docs and other additional materials uploaded*/
 
 // Vote distribution for the Comments.
     mapping (uint256 => uint256) UpNonTechnical;
@@ -56,17 +56,16 @@ contract FreeEvaluation{
   // Constructor used to set parameters for the this specific vote
 
   constructor (
-    address _owner,
     string memory topic,
     string memory desc,
     string memory docs,
     uint256 _ReviewPhaseLengthInSeconds,
     uint256 _CommitPhaseLengthInSeconds,
     uint256 _RevealPhaseLengthInSeconds) public {
-    owner = _owner;
-    Topic = SupportLib.encryption(topic);
-    Description = SupportLib.encryption(desc);
-    Docs = SupportLib.encryption(docs);
+    owner = msg.sender;
+    Topic = topic;
+    Description = desc;
+    Docs = docs;
     reviewPhaseEndTime = block.timestamp + _ReviewPhaseLengthInSeconds;
     commitPhaseEndTime = block.timestamp + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
     revealPhaseEndTime = block.timestamp + _RevealPhaseLengthInSeconds + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;

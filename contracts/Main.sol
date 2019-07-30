@@ -87,8 +87,7 @@ contract Main {
     checkTimeLimit(_CommitPhaseLengthInSeconds)
     checkIfPaused()
     {
-    address _owner = msg.sender;
-    FreeEvaluation newContract = new FreeEvaluation(_owner, topic,
+    FreeEvaluation newContract = new FreeEvaluation(topic,
      desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
     Proposals.push(address(newContract));
     Contracts[address(newContract)] = true;
@@ -113,9 +112,8 @@ contract Main {
     checkSecurityDeposit(_securityDeposit)
     checkIfPaused()
     {
-      address payable _owner = msg.sender;
-    IncentiveEvaluation newContract = new IncentiveEvaluation(
-      _owner, topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
+    IncentiveEvaluation newContract = new IncentiveEvaluation( topic,
+    desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
     Proposals.push(address(newContract));
     Contracts[address(newContract)] = true;
     }
