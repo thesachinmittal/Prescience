@@ -24,7 +24,8 @@ contract Main {
 
   ///@notice Owner's address
   address public owner;     //owner of the contract
-  mapping(address => bool) newContracts;
+  mapping(address => bool) Contracts;
+  address[] public Proposals;
 
 
   modifier minTime(uint256 time){
@@ -89,7 +90,7 @@ contract Main {
     address _owner = msg.sender;
     FreeEvaluation newContract = new FreeEvaluation(_owner, topic,
      desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
-    newContracts[address(newContract)] = true;
+    Contracts[address(newContract)] = true;
     // D newD = (new D).value(amount)(arg);
     }
 
@@ -114,7 +115,12 @@ contract Main {
       address payable _owner = msg.sender;
     IncentiveEvaluation newContract = new IncentiveEvaluation(
       _owner, topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
-    newContracts[address(newContract)] = true;
+    Contracts[address(newContract)] = true;
+    }
+
+
+    function getProposals() public view returns(address[] memory){
+      return Proposals;
     }
 
 
@@ -124,9 +130,14 @@ contract Main {
     checkIfPaused{
     contractPaused = true;
   }
+  function circuitMaker() public
+  onlyOwner{
+    contractPaused = false;
+  }
+
 
     // function incentive(address payable _address) public payable{
-    //     require(newContracts[_address] == true, "Invalid address");
+    //     require(Contracts[_address] == true, "Invalid address");
     //     Evaluation contractAddress = Evaluation(_address);
     //     contractAdress;
     // }
