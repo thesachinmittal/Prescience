@@ -90,6 +90,7 @@ contract Main {
     address _owner = msg.sender;
     FreeEvaluation newContract = new FreeEvaluation(_owner, topic,
      desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
+    Proposals.push(address(newContract));
     Contracts[address(newContract)] = true;
     // D newD = (new D).value(amount)(arg);
     }
@@ -115,6 +116,7 @@ contract Main {
       address payable _owner = msg.sender;
     IncentiveEvaluation newContract = new IncentiveEvaluation(
       _owner, topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
+    Proposals.push(address(newContract));
     Contracts[address(newContract)] = true;
     }
 
