@@ -13497,12 +13497,12 @@
     "1564567601183": {
       "events": {},
       "links": {},
-      "address": "0xb52d90BF294304Dd832BD876157f075B061748C3",
-      "transactionHash": "0xc15828b1a5e59de9c5936ffb8330f7ec7b8210fe8f1e01811c4f818aa66db846"
+      "address": "0x7ea3442a7A6634B8C4BC93d8eC28180AF4507Ca9",
+      "transactionHash": "0x8299349fd1063fa1512799959dc07ef83ec9a5f5635510d0523dd3178763c28f"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-31T12:40:25.439Z",
+  "updatedAt": "2019-07-31T14:18:35.953Z",
   "devdoc": {
     "methods": {
       "Proposal(string,string,string,uint256,uint256,uint256)": {

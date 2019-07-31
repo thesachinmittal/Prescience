@@ -83,7 +83,7 @@ createContract: function(event){
 
   var topic = $('#topic').val();
   var desc = $('#description').val();
-  var docs = $('#Docs').val();
+  var docs = $('#docs').val();
   // var image = $('#image_url').val();
   var ReviewPhaseLengthInSeconds = parseInt($('#ReviewTime').val());
   var CommitPhaseLengthInSeconds = parseInt($('#CommitTime').val());
@@ -119,7 +119,7 @@ createContract: function(event){
         mainInstance = instance;
 
     // Execute adopt as a transaction by sending account
-    return mainInstance.incentivizeProposal(topic,desc,docs,ReviewPhaseLengthInSeconds, CommitPhaseLengthInSeconds, RevealPhaseLengthInSeconds ,SecurityEntryDeposit * 10 **16, {from: account});
+    return mainInstance.incentivizeProposal(topic,desc,docs,ReviewPhaseLengthInSeconds, CommitPhaseLengthInSeconds, RevealPhaseLengthInSeconds ,SecurityEntryDeposit, {from: account});
   }).then(function(result) {
     alert('Your Proposal has been Created');
     //return App.listProposals;
