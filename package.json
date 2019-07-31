@@ -20,6 +20,10 @@
   "devDependencies": {
     "lite-server": "^2.3.0"
   },
+  "dependencies": {
+    "buffer": "^5.2.1",
+    "openzeppelin-solidity": "^2.3.0"
+  },
   "bugs": {
     "url": "https://github.com/sanchaymittal/Prescience/issues"
   },
