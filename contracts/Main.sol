@@ -24,9 +24,11 @@ contract Main {
   uint256 constant public MIN_TIME_PERIOD  = 1 * 1 * 1 * 20;                    /**> Limit of 20 Seconds*/
 
   ///@notice Max Limit for Security Deposit Fee.
-  uint256 constant public MAX_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 18;        /**> 1 ETHER */
+  uint256 constant public MAX_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 18;        /**> 1 ETHER or 1000000000000000000 wei or 1000000000 Gwei*/
 
-  uint256 constant public MIN_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 16;        /**> 0.01 ETHER */
+  uint256 constant public MIN_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 14;        /**> 0.0001 ETHER or 100000000000000 wei or 100000 Gwei */
+
+  uint256 constant public MAX_REWARD_LIMIT = 2 * 10 ** 18;                      /**> 2 ETHER or 2000000000000000000 wei or 2000000000 Gwei*/
 
   ///@notice Switch for Contract.
   ///@dev Only Contract Owner can change the value.
@@ -63,21 +65,21 @@ contract Main {
     _;
   }
 
-  ///@notice Maximum limit for Security Deposit Entry Fee.
+  ///@notice Check for the Maximum limit for Security Deposit Entry Fee.
   ///@dev Check for Integer Overflow for Security Deposit.
   modifier checkMaxSecurityDeposit(uint256 _securityDeposit){
     require(_securityDeposit <= MAX_SECURITY_DEPOSIT_ENTRY_FEE, "Entry Fee is too high");
     _;
   }
 
-  ///@notice Minimum requirement for Security Deposit Entry Fee.
+  ///@notice Check for the Minimum requirement for Security Deposit Entry Fee.
   ///@dev Check for Integer Underflow for Security Deposit.
   modifier checkMinSecurityDeposit(uint256 _securityDeposit){
     require(_securityDeposit >= MIN_SECURITY_DEPOSIT_ENTRY_FEE, "Entry Fee is too low");
     _;
   }
 
-  ///@notice Checks the owner of the contract
+  ///@notice Checks the owner of the contract.
   modifier onlyOwner(){
     require(owner == msg.sender,"Owner's permission is required");
     _;
@@ -87,6 +89,17 @@ contract Main {
   ///@dev Checks the circuit lock.
   modifier checkIfPaused() {
     require(contractPaused == false," Contract is Paused Right Now ");
+    _;
+  }
+
+  ///@notice Checks if Reward is greater than the security deposit.
+  modifier checkRewardLowerLimit(uint256 _securityDeposit,uint256 _reward){
+    require(_securityDeposit <= _reward, "Reward Should be greater than Security Deposit");
+    _;
+  }
+
+  modifier checkRewardUpperLimit(uint256 _reward){
+    require(_reward <= MAX_REWARD_LIMIT, "Reward proposed is off the limit");
     _;
   }
 
@@ -127,14 +140,9 @@ contract Main {
     uint256 _CommitPhaseLengthInSeconds,
     uint256 _RevealPhaseLengthInSeconds)
     public
-    minTime(_ReviewPhaseLengthInSeconds)
-    minTime(_CommitPhaseLengthInSeconds)
-    minTime(_RevealPhaseLengthInSeconds)
-    maxTime(_ReviewPhaseLengthInSeconds)
-    maxTime(_CommitPhaseLengthInSeconds)
-    maxTime(_CommitPhaseLengthInSeconds)
     checkIfPaused()
     {
+    require(checkLimits(_ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds)," Time is out of limit");
     ProposalEvaluation newContract = new ProposalEvaluation(
       topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
     Proposals.push(address(newContract));
@@ -158,23 +166,22 @@ contract Main {
     uint256 _ReviewPhaseLengthInSeconds,
     uint256 _CommitPhaseLengthInSeconds,
     uint256 _RevealPhaseLengthInSeconds,
-    uint256 _securityDeposit)
+    uint256 _securityDeposit,
+    uint256 _Reward)
     public
-    minTime(_ReviewPhaseLengthInSeconds)
-    minTime(_CommitPhaseLengthInSeconds)
-    minTime(_RevealPhaseLengthInSeconds)
-    maxTime(_ReviewPhaseLengthInSeconds)
-    maxTime(_CommitPhaseLengthInSeconds)
-    maxTime(_CommitPhaseLengthInSeconds)
     checkMinSecurityDeposit(_securityDeposit)
     checkMaxSecurityDeposit(_securityDeposit)
+    checkRewardLowerLimit(_securityDeposit, _Reward)
+    checkRewardUpperLimit(_Reward)
     checkIfPaused()
     {
-    IncentivizeProposalEvaluation newContract = new IncentivizeProposalEvaluation(
-    topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit);
-    IncentivizeProposals.push(address(newContract));
-    IncentivizeProposalContracts[address(newContract)] = true;
-    emit SuccessfullyIncentivizedProposalCreated(address(newContract));
+      require(checkLimits(_ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds)," Time is out of limit");
+      // uint256[3] memory Time = [_ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds];
+      IncentivizeProposalEvaluation newContract = new IncentivizeProposalEvaluation(
+      topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit, _Reward);
+      IncentivizeProposals.push(address(newContract));
+      IncentivizeProposalContracts[address(newContract)] = true;
+      emit SuccessfullyIncentivizedProposalCreated(address(newContract));
     }
 
     /**@notice Details of the selected Proposal
@@ -211,7 +218,7 @@ contract Main {
      * @return string Topic of the Proposal
      * @return string Description of the Proposal
      */
-    function getIncentivizedProposalDetails(uint256 Id) public view returns(address payable, string memory, string memory){
+    function getIncentivizedProposal(uint256 Id) public view returns(address payable, string memory, string memory){
       IncentivizeProposalEvaluation newContract = IncentivizeProposalEvaluation(address(IncentivizeProposals[Id]));
       string memory topic = newContract.Topic();
       string memory desc = newContract.Description();
@@ -224,7 +231,7 @@ contract Main {
      * @return string Topic of the Proposal
      * @return string Description of the Proposal
      */
-    function getIncentivizedProposalDetailsByAddress(address payable Contract) public view returns(address payable, string memory, string memory){
+    function getIncentivizedProposalByAddress(address payable Contract) public view returns(address payable, string memory, string memory){
       IncentivizeProposalEvaluation newContract = IncentivizeProposalEvaluation(Contract);
       string memory topic = newContract.Topic();
       string memory desc = newContract.Description();
@@ -263,6 +270,26 @@ contract Main {
     onlyOwner{
     contractPaused = false;
   }
+
+  /**
+   * Helping Functions
+   */
+
+    function checkLimits( uint256 _ReviewPhaseLengthInSeconds, uint256 _CommitPhaseLengthInSeconds, uint256 _RevealPhaseLengthInSeconds)
+    private
+    pure
+    minTime(_ReviewPhaseLengthInSeconds)
+    minTime(_CommitPhaseLengthInSeconds)
+    minTime(_RevealPhaseLengthInSeconds)
+    maxTime(_ReviewPhaseLengthInSeconds)
+    maxTime(_CommitPhaseLengthInSeconds)
+    maxTime(_CommitPhaseLengthInSeconds)
+    returns(bool){
+      return true;
+    }
+
+
+
 
 
     // function incentive(address payable _address) public payable{

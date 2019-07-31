@@ -5,10 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- <meta name="description" content="Colorlib Templates">
-    <meta name="author" content="Colorlib">
-    <meta name="keywords" content="Colorlib Templates"> -->
-	
+    	
 	<!-- Title Page-->
 	<title>Prescience</title>
 
@@ -43,7 +40,10 @@
 					<a class="nav-link" href="#createProposal">Create Proposal</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="index.html">Proposal</a>
+					<a class="nav-link" href="#createIncentiveProposal">Create IncentiveProposal</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="index.html">Proposals</a>
 				</li>
 			</ul>
 			<span style="color: white;" class="form-inline my-2 my-lg-0">
@@ -59,7 +59,68 @@
 				<br/>
 			</div>
 	</div> -->
+</body>
+<body>
 	<div id="createProposal" class="page-wrapper bg-dark p-t-100 p-b-50">
+        <div class="wrapper wrapper--w900">
+            <div class="card card-6">
+                <div class="card-heading">
+                    <h2 class="title">Create Proposal</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-row">
+                            <div class="name">Topic</div>
+                            <div class="value">
+                                <input class="input--style-6" type="text" id="topic1" name="Topic">
+                            </div>
+						</div>
+						<div class="form-row">
+                            <div class="name">Description</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea class="textarea--style-6" id="description1" name="message" placeholder="About the Proposal"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Documents</div>
+                            <div class="value">
+                                <div class="input-group js-input-file">
+                                    <input class="input-file" type="file" name="file_cv" id="file1">
+                                    <label class="label--file" for="file">Choose file</label>
+                                    <span class="input-file__info">No file chosen</span>
+                                </div>
+                                <div class="label--desc">Upload Document or any other relevant file. Max file size 50 MB</div>
+                            </div>
+						</div>
+						<div class="form-row">
+                            <div class="name">Review Time</div>
+                            <div class="value">
+                                <input class="input--style-6" type="text" id="ReviewTime1" name="Review Time">
+                            </div>
+						</div>
+						<div class="form-row">
+                            <div class="name">Commit Time</div>
+                            <div class="value">
+                                <input class="input--style-6" type="text" id="CommitTime1" name="Commit Time">
+                            </div>
+						</div>
+						<div class="form-row">
+                            <div class="name">Reveal Time</div>
+                            <div class="value">
+                                <input class="input--style-6" type="text" id="RevealTime1" name="Reveal Time">
+                            </div>
+						</div>						
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button id="proposal" class="btn btn--radius-2 btn--blue-2" type="submit">Create Proposal</button>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div id="createIncentiveProposal" class="page-wrapper bg-dark p-t-100 p-b-50">
         <div class="wrapper wrapper--w900">
             <div class="card card-6">
                 <div class="card-heading">
@@ -81,15 +142,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="form-row">
-                            <div class="name">Email address</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-6" type="email" name="email" placeholder="example@email.com">
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- <div class="form-row">
+                        <div class="form-row">
                             <div class="name">Documents</div>
                             <div class="value">
                                 <div class="input-group js-input-file">
@@ -97,65 +150,49 @@
                                     <label class="label--file" for="file">Choose file</label>
                                     <span class="input-file__info">No file chosen</span>
                                 </div>
-                                <div class="label--desc">Upload your CV/Resume or any other relevant file. Max file size 50 MB</div>
-                            </div>
-						</div> -->
-						<div class="form-row">
-                            <div class="name">Docs</div>
-                            <div class="value">
-                                <input class="input--style-6" type="text" id="docs" name="Documents">
+                                <div class="label--desc">Upload Document or any other relevant file. Max file size 50 MB</div>
                             </div>
 						</div>
 						<div class="form-row">
-                            <div class="name">Review Time</div>
+                            <div class="name">Review Time Period</div>
                             <div class="value">
                                 <input class="input--style-6" type="text" id="ReviewTime" name="Review Time">
                             </div>
 						</div>
 						<div class="form-row">
-                            <div class="name">Commit Time</div>
+                            <div class="name">Commit Time Period</div>
                             <div class="value">
                                 <input class="input--style-6" type="text" id="CommitTime" name="Commit Time">
                             </div>
 						</div>
 						<div class="form-row">
-                            <div class="name">Reveal Time</div>
+                            <div class="name">Reveal Time Period</div>
                             <div class="value">
                                 <input class="input--style-6" type="text" id="RevealTime" name="Reveal Time">
                             </div>
 						</div>
 						<div class="form-row">
-                            <div class="name">Security Deposit</div>
+                            <div class="name">Set Security Deposit </div>
                             <div class="value">
-                                <input class="input--style-6" type="text" id="SecurityEntryDeposit" name="Security">
+								<input class="input--style-6" type="text" id="SecurityEntryDeposit" name="Security Deposit" placeholder="1000000000 Gwei">
+								<div class="label--desc"> <a href="http://eth-converter.com/"> Security Entry Deposit in Gwei</a>, Should be in between 100000 Gwei to 1000000000 Gwei</div>
                             </div>
 						</div>
-						
+						<div class="form-row">
+                            <div class="name">Set Reward</div>
+                            <div class="value">
+								<input class="input--style-6" type="text" id="Reward" name="Reward" placeholder="1000000000 Gwei">
+								<div class="label--desc"> <a href="http://eth-converter.com/"> Reward in Gwei</a>, Should be greater than or equal to threshold Security deposit.</div>
+                            </div>
+						</div>
                     </form>
                 </div>
                 <div class="card-footer">
-                    <button id="create" class="btn btn--radius-2 btn--blue-2" type="submit">Create Proposal</button>
+                    <button id="incentiveProposal" class="btn btn--radius-2 btn--blue-2" type="submit">Create Proposal</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div class="row">
-			<div class="col-sm-12 col-md-3">
-				<h2 class="text-center">Create New Proposal</h2>
-				<form id="form1">
-					Topic: <input class="form-control" type="text" id="topic" name="topic">
-					Description: <input class="form-control" type="text" id="description" name="description">
-					Docs: <input class="form-control" type="text" id="Docs" name="docs">
-					Review Time: <input class="form-control" type="text" id="ReviewTime" name="Review Time">
-					Commit Time: <input class="form-control" type="text" id="CommitTime" name="Commit Time">
-					Reveal Time: <input class="form-control" type="text" id="RevealTime" name="Reveal Time">
-					Security Entry Deposit: <input class="form-control" type="text" id="SecurityEntryDeposit" name="Security Entry Deposit">
-					<br><br>
-					<center><button id="create" class="btn btn-success btn-adopt">Create Proposal</button></center>
-				</form>
-				<br><br>
-			</div>
-		</div> -->
 		<!-- <div class="row">
 			<div class="col-md-12">
 				<div id="petsRow" class="row">
@@ -192,9 +229,12 @@
 	<!-- Jquery JS-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	
+	<!-- Ipfs-http-client-->
+	<script src="https://unpkg.com/ipfs-http-client/dist/index.min.js"></script>
 
 	<!-- Main JS-->
-	<!-- <script src="js/global.js"></script> -->
+	<script src="js/global.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/web3.min.js"></script>
 	<script src="js/truffle-contract.js"></script>

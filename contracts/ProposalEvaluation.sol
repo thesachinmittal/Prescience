@@ -67,8 +67,8 @@ contract ProposalEvaluation{
     Description = desc;
     Docs = docs;
     reviewPhaseEndTime = block.timestamp + _ReviewPhaseLengthInSeconds;
-    commitPhaseEndTime = block.timestamp + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
-    revealPhaseEndTime = block.timestamp + _RevealPhaseLengthInSeconds + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
+    commitPhaseEndTime = reviewPhaseEndTime + _CommitPhaseLengthInSeconds;
+    revealPhaseEndTime = commitPhaseEndTime + _RevealPhaseLengthInSeconds;
   }
 
     

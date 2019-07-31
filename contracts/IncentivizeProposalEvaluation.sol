@@ -1,22 +1,23 @@
+///@title IncentiveProposalEvaluation
 ///@author Sanchay Mittal
-
+///@notice Unique
 pragma solidity ^0.5.0;
 
 // import "node_modules/openzeppelin-solidity/contracts/math/Math.sol";
 // import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./SupportLib.sol";
 
-///@title IncentiveEvaluation
-///@notice Unique
 contract IncentivizeProposalEvaluation{
   ///@notice Admin's address
-  address payable public owner;     //owner of the contract
+  ///@dev payable allows address to recieve funding.
+  address payable public owner;     
 
+  ///@notice Entry Security Deposit
   uint256 public threshold;
 
-  uint constant public amount = 1 * 10**17;    /**> Threshold amount in wei as a deposit entry fee */
+  uint256 public reward;    /**> Threshold amount in wei as a deposit entry fee */
 
-  uint winner;
+  uint256 winner;
 
 
 
@@ -81,15 +82,17 @@ contract IncentivizeProposalEvaluation{
       uint256 _ReviewPhaseLengthInSeconds,
       uint256 _CommitPhaseLengthInSeconds,
       uint256 _RevealPhaseLengthInSeconds,
-      uint256 _threshold) public {
+      uint256 _threshold,
+      uint256 _reward) public {
     owner = msg.sender;
     Topic = topic;
     Description = desc;
     Docs = docs;
     reviewPhaseEndTime = block.timestamp + _ReviewPhaseLengthInSeconds;
-    commitPhaseEndTime = block.timestamp + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
-    revealPhaseEndTime = block.timestamp + _RevealPhaseLengthInSeconds + _CommitPhaseLengthInSeconds + _ReviewPhaseLengthInSeconds;
+    commitPhaseEndTime = reviewPhaseEndTime + _CommitPhaseLengthInSeconds;
+    revealPhaseEndTime = commitPhaseEndTime + _RevealPhaseLengthInSeconds;
     threshold = _threshold;
+    reward = _reward;
   }
 
 
@@ -145,13 +148,13 @@ contract IncentivizeProposalEvaluation{
       period = Period.EndGame;
     }
 
-    function reward() public payable{
+    function winnersReward() public payable{
       require(period == Period.EndGame,"It's Done");
       require(now < rewardPhaseEndTime,"You are too late");
       require(vote[msg.sender] == winner, "You aren't the winner ");
       require(Redeem[msg.sender] == false, "You have redeem your reward");
       Redeem[msg.sender] = true;
-      msg.sender.transfer(amount);
+      msg.sender.transfer(reward);
       emit WinnerIsHere(msg.sender);
     }
 

@@ -15,10 +15,10 @@
 - [ ] Truffle project - compile, migrate, test
 - [x] Smart Contract Commented
 - [x] Library use
-- [ ] Local development interface
-    - [ ] Displays the current ETH Account
-    - [ ] Can sign transactions using MetaMask
-    - [ ] App interface reflects contract state
+- [x] Local development interface
+    - [x] Displays the current ETH Account
+    - [x] Can sign transactions using MetaMask
+    - [x] App interface reflects contract state
 - [ ] 5 tests in Js or Sol
     - [ ] Structured tests
     - [ ] All pass
@@ -28,7 +28,7 @@
 - [ ] deployed_addresses.txt that indicates contract address on testnet
 - [ ] upgradeable design pattern
 - [ ] One contract written in Vyper or LLL
-- [ ] IPFS
+- [x] IPFS
 - [ ] uPort
 - [ ] ENS
 - [ ] Oracle
