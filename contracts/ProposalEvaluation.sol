@@ -8,16 +8,16 @@ import "./SupportLib.sol";
 
 ///@title FreeEvaluation: Contract allows participants to write their review and vote for the success.
 ///@notice Neither Entry Fee is required nor crypto incentive is awarded to participant by proposal owner.
-contract FreeEvaluation{
+contract ProposalEvaluation{
 
 
  ///@notice Admin's address
   address public owner;     //owner of the contract
 
 // MetaData
-  string Topic;                        /**> Topic of Discussion*/
-  string Description;                  /**> Discription of technology*/
-  string Docs;                         /**> Docs and other additional materials uploaded*/
+  string public Topic;                        /**> Topic of Discussion*/
+  string public Description;                  /**> Discription of technology*/
+  string public Docs;                         /**> Docs and other additional materials uploaded*/
 
 // Vote distribution for the Comments.
     mapping (uint256 => uint256) UpNonTechnical;
@@ -48,10 +48,10 @@ contract FreeEvaluation{
     event voteWinnerCount(uint, uint);
 
 
-  ///@notice Fallback function
-  ///@dev Funds Collection here.
-  function() external payable{
-  }
+  // ///@notice Fallback function
+  // ///@dev Funds Collection here.
+  // function() external payable{
+  // }
 
   // Constructor used to set parameters for the this specific vote
 

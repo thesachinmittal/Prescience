@@ -1,5 +1,3 @@
-import { create } from "domain";
-
 App = {
   web3Provider: null,
   contracts: {},
@@ -44,7 +42,7 @@ return App.initContract();
 },
 
   initContract: function() {
-    $.getJSON('Main.json', function(data) {
+    $.getJSON('./Main.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract
       var MainArtifact = data;
       App.contracts.Main = TruffleContract(MainArtifact);
@@ -53,13 +51,12 @@ return App.initContract();
       App.contracts.Main.setProvider(App.web3Provider);
     
       // Use our contract to retrieve and mark the adopted pets
-      return App.createContract();
     });
     return App.bindEvents();
   },
 
   bindEvents: function() {
-    $(create).on('click', '.btn-adopt', App.createContract);
+    $(document).on('click', '#create', App.createContract);
   },
 
   listProposals: function(Proposals, account) {
@@ -81,23 +78,23 @@ return App.initContract();
     
   },
 
-createContract: async function(event){
+createContract: function(event){
   event.preventDefault();
 
-  var name = $('#name').val();
+  var topic = $('#topic').val();
   var desc = $('#description').val();
   var docs = $('#Docs').val();
   // var image = $('#image_url').val();
-  var ReviewPhaseLengthInSeconds = $('ReviewTime').val();
-  var CommitPhaseLengthInSeconds = $('CommitTime').val();
-  var RevealPhaseLengthInSeconds = $('ReviewTime').val();
-  var Deposit = parseInt($('#Deposit').val());
-  console.log(Deposit);
+  var ReviewPhaseLengthInSeconds = parseInt($('#ReviewTime').val());
+  var CommitPhaseLengthInSeconds = parseInt($('#CommitTime').val());
+  var RevealPhaseLengthInSeconds = parseInt($('#ReviewTime').val());
+  var SecurityEntryDeposit = parseInt($('#SecurityEntryDeposit').val());
+  console.log(SecurityEntryDeposit);
 
-  if (name == '' || desc == '' ||docs == '' || ReviewPhaseLengthInSeconds == '' || CommitPhaseLengthInSeconds == '' || RevealPhaseLengthInSeconds == '' || Deposit == '') {
+  /*if (topic == '' || desc == '' ||docs == '' || ReviewPhaseLengthInSeconds == '' || CommitPhaseLengthInSeconds == '' || RevealPhaseLengthInSeconds == '' || SecurityEntryDeposit == '') {
     alert('Can\'t leave Anything empty');
     return null;
-  }
+  }*/
 
   // var images = document.getElementById('image_url');
   // const file = images.files[0]
@@ -110,7 +107,7 @@ createContract: async function(event){
   //   }
   //   var url = `https://ipfs.io/ipfs/${result[0].hash}`
   //   console.log(`Url --> ${url}`);
-  
+  var mainInstance;
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
         console.log(error);
@@ -122,10 +119,10 @@ createContract: async function(event){
         mainInstance = instance;
 
     // Execute adopt as a transaction by sending account
-    return mainInstance.incentive(name,desc,docs,ReviewPhaseLengthInSeconds, CommitPhaseLengthInSeconds, RevealPhaseLengthInSeconds ,Deposit, {from: account});
+    return mainInstance.incentivizeProposal(topic,desc,docs,ReviewPhaseLengthInSeconds, CommitPhaseLengthInSeconds, RevealPhaseLengthInSeconds ,SecurityEntryDeposit * 10 **16, {from: account});
   }).then(function(result) {
     alert('Your Proposal has been Created');
-    return App.listProposals;
+    //return App.listProposals;
   }).catch(function(err) {
     console.log(err.message);
   });

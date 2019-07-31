@@ -8,7 +8,7 @@ import "./SupportLib.sol";
 
 ///@title IncentiveEvaluation
 ///@notice Unique
-contract IncentiveEvaluation{
+contract IncentivizeProposalEvaluation{
   ///@notice Admin's address
   address payable public owner;     //owner of the contract
 
@@ -21,8 +21,8 @@ contract IncentiveEvaluation{
 
 
 // MetaData
-  string Topic;                        /**> Topic of Discussion*/
-  string Description;                  /**> Discription of technology*/
+  string public Topic;                        /**> Topic of Discussion*/
+  string public Description;                  /**> Discription of technology*/
   string Docs;                         /**> Docs and other additional materials uploaded*/
 
 // Vote distribution for the Comments.
