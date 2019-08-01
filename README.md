@@ -96,7 +96,7 @@ IPFS has been used to store the content of a specefic course. IPFS provides with
 ## Evaluation checklist
 
 - [x] README.md
-- [ ] Screen recording [!!]
+- [x] Screen recording [!!]
 - [x] Truffle project - compile, migrate, test
 - [x] Smart Contract Commented
 - [x] Library use
@@ -110,7 +110,7 @@ IPFS has been used to store the content of a specefic course. IPFS provides with
 - [x] Circuit breaker/Emergency stop
 - [x] Project includes a file called design_pattern_desicions.md / at least 2 implemented
 - [x] avoiding_common_attacks.md and explains at least 3 attacks and how it mitigates
-- [ ] deployed_addresses.txt that indicates contract address on testnet
+- [x] deployed_addresses.txt that indicates contract address on testnet
 - [x] upgradeable design pattern
 - [ ] One contract written in Vyper or LLL
 - [x] IPFS
