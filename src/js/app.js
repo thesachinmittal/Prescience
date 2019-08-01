@@ -156,8 +156,8 @@ createIncentivizeContract: async function(event){
   var ReviewPhaseLengthInSeconds = parseInt($('#ReviewTime').val());
   var CommitPhaseLengthInSeconds = parseInt($('#CommitTime').val());
   var RevealPhaseLengthInSeconds = parseInt($('#ReviewTime').val());
-  var SecurityEntryDeposit = parseInt($('#SecurityEntryDeposit').val()) * 1000000000;
-  var Reward = parseInt($('#Reward').val()) * 1000000000;
+  var SecurityEntryDeposit = parseInt($('#SecurityEntryDeposit').val());
+  var Reward = parseInt($('#Reward').val());
 
   console.log(SecurityEntryDeposit);
 

@@ -1,11 +1,10 @@
 <p align="center">
-  <img src="./src/images/Icon_Classic.png" align="center">
+  <img src="./src/images/Icon_Classic.jpg" align="center">
 </p>
 
-# Prescience
->Consensys Bootcamp Final Project
 
->Author: Sanchay Mittal
+>Author: Sanchay Mittal><br> 
+>Consensys Bootcamp 2019 Final Project
 
 ## What does your project do?
 
@@ -32,16 +31,16 @@ Since the aim is complex, and scope of project is much bigger and ask for bigger
 
 - [x] README.md
 - [ ] Screen recording [!!]
-- [ ] Truffle project - compile, migrate, test
+- [x] Truffle project - compile, migrate, test
 - [x] Smart Contract Commented
 - [x] Library use
 - [x] Local development interface
     - [x] Displays the current ETH Account
     - [x] Can sign transactions using MetaMask
     - [x] App interface reflects contract state
-- [ ] 5 tests in Js or Sol
-    - [ ] Structured tests
-    - [ ] All pass
+- [x] 5 tests in Js or Sol
+    - [x] Structured tests
+    - [x] All pass
 - [x] Circuit breaker/Emergency stop
 - [ ] Project includes a file called design_pattern_desicions.md / at least 2 implemented
 - [x] avoiding_common_attacks.md and explains at least 3 attacks and how it mitigates

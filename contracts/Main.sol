@@ -24,15 +24,18 @@ contract Main {
   uint256 constant public MIN_TIME_PERIOD  = 1 * 1 * 1 * 20;                    /**> Limit of 20 Seconds*/
 
   ///@notice Max Limit for Security Deposit Fee.
-  uint256 constant public MAX_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 18;        /**> 1 ETHER or 1000000000000000000 wei or 1000000000 Gwei*/
+  uint256 constant public MAX_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 9;        /**> 1 ETHER or 1000000000000000000 wei or 1000000000 Gwei*/
 
-  uint256 constant public MIN_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 14;        /**> 0.0001 ETHER or 100000000000000 wei or 100000 Gwei */
+  uint256 constant public MIN_SECURITY_DEPOSIT_ENTRY_FEE = 1 * 10 ** 5;        /**> 0.0001 ETHER or 100000000000000 wei or 100000 Gwei */
 
-  uint256 constant public MAX_REWARD_LIMIT = 2 * 10 ** 18;                      /**> 2 ETHER or 2000000000000000000 wei or 2000000000 Gwei*/
+  uint256 constant public MAX_REWARD_LIMIT = 2 * 10 ** 9;                      /**> 2 ETHER or 2000000000000000000 wei or 2000000000 Gwei*/
 
   ///@notice Switch for Contract.
   ///@dev Only Contract Owner can change the value.
   bool public contractPaused = false;
+
+  uint256 ProposalId;
+  uint256 IncentivizeProposalId;
 
   ///@notice Owner's address
   address public owner;                                                         /**> owner of the contract*/
@@ -41,11 +44,17 @@ contract Main {
   mapping(address => bool) ProposalContracts;
   mapping(address => bool) IncentivizeProposalContracts;
 
-  ///@notice Array of Addresses of created Proposals.
-  address[] public Proposals;
+  ///@notice Array of Contract Addresses of created Proposals.
+  mapping(uint256 => address) public Proposals;
 
-  ///@notice Array of Addresses of created Incentivized Proposals.
-  address payable[] public IncentivizeProposals;
+  ///@notice Array of Addresses of Owner or Admin's of Proposals.
+  mapping(uint256 => address) public ProposalOwner;
+
+  ///@notice Array of Contract Addresses of created Incentivized Proposals.
+  mapping(uint256 => address payable) public IncentivizeProposals;
+
+  ///@notice Array of Addresses of Incentivized Proposal owners.
+  mapping(uint256 => address) public IncentivizeProposalOwner;
 
   /**
    * Modifiers
@@ -107,8 +116,8 @@ contract Main {
    * Events
    */
 
-  event SuccessfullyProposalCreated(uint256 Id, address Contract);
-  event SuccessfullyIncentivizedProposalCreated(uint256 Id, address Contract);
+  event SuccessfullyProposalCreated(uint256 Id, address ContractOwner, address Contract);
+  event SuccessfullyIncentivizedProposalCreated(uint256 Id, address ContractOwner, address Contract);
 
   /**
    * Constructor
@@ -145,10 +154,14 @@ contract Main {
     require(checkLimits(_ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds)," Time is out of limit");
     ProposalEvaluation newContract = new ProposalEvaluation(
       topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
-    Proposals.push(address(newContract));
+    ProposalId++;
+    uint256 ID = ProposalId - 1;
+    Proposals[ID] = (address(newContract));
+    ProposalOwner[ID] = msg.sender;
+
     ProposalContracts[address(newContract)] = true;
-    uint256 ID = Proposals.length - 1;
-    emit SuccessfullyProposalCreated(ID, address(newContract));
+
+    emit SuccessfullyProposalCreated(ID, msg.sender, address(newContract));
     }
 
    /**@notice Create a Incentivized Proposal for Judgement.
@@ -176,14 +189,20 @@ contract Main {
     checkRewardUpperLimit(_Reward)
     checkIfPaused()
     {
+      uint256 threshold = _securityDeposit * 10**9;        /**> From Gwei to wei */
       require(checkLimits(_ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds)," Time is out of limit");
-      // uint256[3] memory Time = [_ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds];
       IncentivizeProposalEvaluation newContract = new IncentivizeProposalEvaluation(
-      topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit, _Reward);
-      IncentivizeProposals.push(address(newContract));
+      topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit, threshold);
+      
+      IncentivizeProposalId++;
+      uint256 ID = IncentivizeProposalId - 1;
+
+      IncentivizeProposals[ID] = (address(newContract));
+      IncentivizeProposalOwner[ID] = (msg.sender);
+
       IncentivizeProposalContracts[address(newContract)] = true;
-      uint256 ID = IncentivizeProposals.length - 1;
-      emit SuccessfullyIncentivizedProposalCreated(ID, address(newContract));
+
+      emit SuccessfullyIncentivizedProposalCreated(ID, msg.sender, address(newContract));
     }
 
     /**@notice Details of the selected Proposal
@@ -192,12 +211,13 @@ contract Main {
      * @return string Topic of the Proposal
      * @return string Description of the Proposal
      */
-    function getProposalDetails(uint256 Id) public view returns(address ,string memory, string memory){
+    function getProposalDetails(uint256 Id) public view returns(address ,address, string memory, string memory){
       require(ProposalContracts[Proposals[Id]]," Contract is not present by this address");
-      ProposalEvaluation newContract = ProposalEvaluation(address(Proposals[Id]));
+      ProposalEvaluation newContract = ProposalEvaluation(Proposals[Id]);
+      address ContractOwner = address(ProposalOwner[Id]);
       string memory topic = newContract.Topic();
       string memory desc = newContract.Description();
-      return (Proposals[Id],topic,desc);
+      return (ContractOwner,Proposals[Id],topic,desc);
     }
 
     /**@notice Details of the selected Proposal
@@ -206,12 +226,14 @@ contract Main {
      * @return string Topic of the Proposal
      * @return string Description of the Proposal
      */
-    function getProposalDetailsByAddress(address Contract) public view returns(address ,string memory, string memory){
+    function getProposalDetailsByAddress(address Contract) public view returns(address ,string memory, string memory, string memory){
       require(ProposalContracts[Contract]," Contract is not present by this address");
       ProposalEvaluation newContract = ProposalEvaluation(Contract);
+
       string memory topic = newContract.Topic();
       string memory desc = newContract.Description();
-      return (Contract,topic,desc);
+      string memory docs = newContract.Docs();
+      return (Contract,topic,desc, docs);
     }
 
     /**@notice Details of the selected Incentivized Proposal
@@ -220,11 +242,12 @@ contract Main {
      * @return string Topic of the Proposal
      * @return string Description of the Proposal
      */
-    function getIncentivizedProposal(uint256 Id) public view returns(address payable, string memory, string memory){
+    function getIncentivizedProposal(uint256 Id) public view returns(address, address payable, string memory, string memory){
       IncentivizeProposalEvaluation newContract = IncentivizeProposalEvaluation(address(IncentivizeProposals[Id]));
+      address ContractOwner = address(IncentivizeProposalOwner[Id]);
       string memory topic = newContract.Topic();
       string memory desc = newContract.Description();
-      return (IncentivizeProposals[Id],topic,desc);
+      return (ContractOwner, IncentivizeProposals[Id],topic,desc);
     }
 
     /**@notice Details of the selected Incentivized Proposal
@@ -243,15 +266,15 @@ contract Main {
     /**@notice getProposals list all the address of the Proposals.
      * @return address[] Array of Proposals address.
      */
-    function getProposals() public view returns(address[] memory){
-      return Proposals;
+    function getProposalAddress(uint256 Id) public view returns(address){
+      return Proposals[Id];
     }
 
     /**@notice getIncentivizedProposals List all the address of the Incentivized Proposals.
      * @return address[] Array of Incentivized Proposals address.
      */
-    function getIncentivizedProposals() public view returns(address payable[] memory){
-      return IncentivizeProposals;
+    function getIncentivizedProposalAddress(uint256 Id) public view returns(address payable){
+      return IncentivizeProposals[Id];
     }
 
 
@@ -285,7 +308,7 @@ contract Main {
     minTime(_RevealPhaseLengthInSeconds)
     maxTime(_ReviewPhaseLengthInSeconds)
     maxTime(_CommitPhaseLengthInSeconds)
-    maxTime(_CommitPhaseLengthInSeconds)
+    maxTime(_RevealPhaseLengthInSeconds)
     returns(bool){
       return true;
     }
