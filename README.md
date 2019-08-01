@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./src/images/icon_classic.png" align="center" width="150">
+  <img src="./src/images/Icon_Classic.png" align="center">
 </p>
 
 # Prescience
