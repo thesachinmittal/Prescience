@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "buffer": "^5.2.1",
-    "openzeppelin-solidity": "^2.3.0"
+    "openzeppelin-solidity": "^2.3.0",
+    "truffle-hdwallet-provider": "^1.0.15"
   },
   "bugs": {
     "url": "https://github.com/sanchaymittal/Prescience/issues"
