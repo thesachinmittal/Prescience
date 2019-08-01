@@ -1,10 +1,30 @@
+<p align="center">
+  <img src="./src/images/icon_classic.png" align="center" width="150">
+</p>
+
 # Prescience
 >Consensys Bootcamp Final Project
 
 >Author: Sanchay Mittal
 
 ## What does your project do?
+
+### Original vision of Prescience
+
+- Leveraging crowd wisdom to hit schelling point and find the TRUTH.
+
+### Motivation
+- Story of bitcoin and cyberpunk
+
+
+### Aim
+
+Prescience is aimed to become a DAO (Decentralized Autonomous Organisation) for researchers, Students...  It will provide a decentralized market research platform where Researchers, Inventors and Students can get 100% objectively fair reviews, voting for their next multi-million dollar idea. 
+<br>
+Since the aim is complex, and scope of project is much bigger and ask for bigger commitments. For this program, I have build basic functionalities and specifications with SCRATCH. 
+
 ## How to set it up
+
 ## Devlopement
 
 

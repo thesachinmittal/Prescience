@@ -107,8 +107,8 @@ contract Main {
    * Events
    */
 
-  event SuccessfullyProposalCreated(address Contract);
-  event SuccessfullyIncentivizedProposalCreated(address Contract);
+  event SuccessfullyProposalCreated(uint256 Id, address Contract);
+  event SuccessfullyIncentivizedProposalCreated(uint256 Id, address Contract);
 
   /**
    * Constructor
@@ -147,7 +147,8 @@ contract Main {
       topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds);
     Proposals.push(address(newContract));
     ProposalContracts[address(newContract)] = true;
-    emit SuccessfullyProposalCreated(address(newContract));
+    uint256 ID = Proposals.length - 1;
+    emit SuccessfullyProposalCreated(ID, address(newContract));
     }
 
    /**@notice Create a Incentivized Proposal for Judgement.
@@ -181,7 +182,8 @@ contract Main {
       topic, desc, docs, _ReviewPhaseLengthInSeconds, _CommitPhaseLengthInSeconds, _RevealPhaseLengthInSeconds, _securityDeposit, _Reward);
       IncentivizeProposals.push(address(newContract));
       IncentivizeProposalContracts[address(newContract)] = true;
-      emit SuccessfullyIncentivizedProposalCreated(address(newContract));
+      uint256 ID = IncentivizeProposals.length - 1;
+      emit SuccessfullyIncentivizedProposalCreated(ID, address(newContract));
     }
 
     /**@notice Details of the selected Proposal

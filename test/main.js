@@ -1,12 +1,14 @@
 /*
-This is the test file for the Supply Chain Exercise: https://github.com/ConsenSys-Academy/supply-chain-exercise
+This is the test file for Prescience is here: https://github.com/sanchaymittal/prescience.
+
 This test file has been updated for Truffle version 5.0. If your tests are failing, make sure that you are
 using Truffle version 5.0. You can check this by running "truffle version"  in the terminal. If version 5 is not
 installed, you can uninstall the existing version with `npm uninstall -g truffle` and install the latest version (5.0)
 with `npm install -g truffle`.
 */
+
 let BN = web3.utils.BN
-let SupplyChain = artifacts.require('Main')
+let Main = artifacts.require('Main')
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 
 contract('Main', function(accounts) {
@@ -17,11 +19,13 @@ contract('Main', function(accounts) {
     const emptyAddress = '0x0000000000000000000000000000000000000000'
 
     const topic = "Facebook Libra Coin";
-    const description = "";
-    const docs = "";
+    const description = "It's a digital representation of a basket of fiat currencies and other securities. The only thing Libra coin has in common with cryptocurrencies is that they all move on a blockchain";
+    const docs = "https://infura";
     const ReviewPhaseLengthInSeconds = 30;
     const CommitPhaseLengthInSeconds = 30;
     const RevealPhaseLengthInSeconds = 30;
+    const SecurityDeposit = 1 * 10 ** 18;
+    const Reward = 1 * 10 ** 18;
 
     const price = "1000"
     const excessAmount = "2000"
@@ -33,16 +37,23 @@ contract('Main', function(accounts) {
         instance = await Main.new()
     })
 
-    it("should add an item with the provided topic, docs, Review Time, Commit Time and Reveal Time", async() => {
-        const tx = await instance.free(topic, description, docs, ReviewPhaseLengthInSeconds, CommitPhaseLengthInSeconds, RevealPhaseLengthInSeconds, {from: alice})
-                
-        const result = await instance.fetchItem.call(0)
+    it("should create a proposal which includes Topic, Description, Documents, Review Time, Commit Time and Reveal Time as it's parameters", async() => {
+        const tx = await instance.Proposal(topic, description, docs, ReviewPhaseLengthInSeconds, CommitPhaseLengthInSeconds, RevealPhaseLengthInSeconds, {from: alice})
+        
+        const result = await instance.getProposalDetails.call(0)
+        const ContractAddress = await instance.Proposals.call(0)
 
-        assert.equal(result[0], name, 'the name of the last added item does not match the expected value')
-        assert.equal(result[2].toString(10), price, 'the price of the last added item does not match the expected value')
-        assert.equal(result[3].toString(10), 0, 'the state of the item should be "For Sale", which should be declared first in the State Enum')
-        assert.equal(result[4], alice, 'the address adding the item should be listed as the seller')
-        assert.equal(result[5], emptyAddress, 'the buyer address should be set to 0 when an item is added')
+        assert.equal(result[0], ContractAddress, 'The Adresses of the created contract do not match to the expected contract address')
+        assert.equal(result[1], topic, 'the topic of the last addded item do not match the expected value')
+        assert.equal(result[2], description, 'the topic of the last addded item do not match the expected value')
+        assert.equal(result[3], alice, 'the address adding the item should be listed as the seller')
+        assert.equal(result[4], emptyAddress, 'the buyer address should be set to 0 when an item is added')
+
+        // assert.equal(result[0], name, 'the name of the last added item does not match the expected value')
+        // assert.equal(result[2].toString(10), price, 'the price of the last added item does not match the expected value')
+        // assert.equal(result[3].toString(10), 0, 'the state of the item should be "For Sale", which should be declared first in the State Enum')
+        // assert.equal(result[4], alice, 'the address adding the item should be listed as the seller')
+        // assert.equal(result[5], emptyAddress, 'the buyer address should be set to 0 when an item is added')
     })
 
     it("should emit a LogForSale event when an item is added", async()=> {
