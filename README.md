@@ -51,7 +51,7 @@ truffle migrate
 ```
 
 ##### Setup the frontend
-The frontend is a React app that uses drizzle to interact with the contract.
+The frontend is a lite-server app to interact with the contract.
 
 ```
 npm run dev
