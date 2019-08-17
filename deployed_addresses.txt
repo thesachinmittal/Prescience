@@ -1,8 +1,51 @@
-sanchaymittal@sanchaymittal-Lenovo-B40-80:~/Prescience$ truffle deploy --network ropsten
+sanchaymittal@sanchaymittal-Lenovo-B40-80:~/Prescience$ truffle migrate --network ropsten
 
 Compiling your contracts...
 ===========================
 > Everything is up to date, there is nothing to compile.
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'ropsten-fork'
+> Network id:      3
+> Block gas limit: 0x7a121d
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'SupportLib'
+   ----------------------
+   > block number:        6209568
+   > block timestamp:     1566035627
+   > account:             0x0B06EC5728728A0E8868e168577a0f52B42d7A1E
+   > balance:             6.770814796
+   > gas used:            74242
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000148484 ETH
+
+
+   Deploying 'Main'
+   ----------------
+   > block number:        6209569
+   > block timestamp:     1566035636
+   > account:             0x0B06EC5728728A0E8868e168577a0f52B42d7A1E
+   > balance:             6.758922338
+   > gas used:            5946229
+   > gas price:           2 gwei
+   > value sent:          0 ETH
+   > total cost:          0.011892458 ETH
+
+   -------------------------------------
+   > Total cost:         0.012040942 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.012040942 ETH
 
 
 Starting migrations...
@@ -12,99 +55,46 @@ Starting migrations...
 > Block gas limit: 0x7a121d
 
 
-1_initial_migration.js
-======================
-
-   Deploying 'Migrations'
-   ----------------------
-   > transaction hash:    0x9ae01e63e755e4b683209b077d7253eb0f77dd9719473f6e9741db34e0d8b783
-   > Blocks: 2            Seconds: 45
-   > contract address:    0x3026cAD1B2e0E4c4893B7FE8fF868a0Ef3F8975f
-   > block number:        6105020
-   > block timestamp:     1564662116
-   > account:             0x0B06EC5728728A0E8868e168577a0f52B42d7A1E
-   > balance:             6.99477342
-   > gas used:            261329
-   > gas price:           20 gwei
-   > value sent:          0 ETH
-   > total cost:          0.00522658 ETH
-
-   Pausing for 2 confirmations...
-   ------------------------------
-   > confirmation number: 1 (block: 6105021)
-   > confirmation number: 2 (block: 6105022)
-
-   > Saving migration to chain.
-   > Saving artifacts
-   -------------------------------------
-   > Total cost:          0.00522658 ETH
-
-
 2_deploy_contracts.js
 =====================
 
    Deploying 'SupportLib'
    ----------------------
-   > transaction hash:    0xded8d5108dd059f24b76833e4692c31ef2850fd6bb85cab34b28110eee51b2ec
-   > Blocks: 1            Seconds: 29
-   > contract address:    0xd574C27132f00F5b82A09F8E05726Ab3433c5617
-   > block number:        6105027
-   > block timestamp:     1564662234
+   > transaction hash:    0x3592dbe8e4c9c245c0572b4fb31f5e98996457a4f0e8006411a267f24210a680
+   > Blocks: 2            Seconds: 9
+   > contract address:    0x3DDCBD914A2A7eB4576f6B0b6309F4E17B0867C0
+   > block number:        6209573
+   > block timestamp:     1566035672
    > account:             0x0B06EC5728728A0E8868e168577a0f52B42d7A1E
-   > balance:             6.99244812
+   > balance:             6.76947844
    > gas used:            74242
    > gas price:           20 gwei
    > value sent:          0 ETH
    > total cost:          0.00148484 ETH
 
-   Pausing for 2 confirmations...
-   ------------------------------
-Error: Invalid JSON RPC response: ""
-    at Object.InvalidResponse (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/web3/node_modules/web3-core-helpers/src/errors.js:42:1)
-    at t.InvalidResponse [as onreadystatechange] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/web3/node_modules/web3-providers-http/src/index.js:92:1)
-    at t.call [as dispatchEvent] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request-event-target.js:34:1)
-    at t.dispatchEvent [as _setReadyState] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request.js:208:1)
-    at t._setReadyState [as _onHttpRequestError] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request.js:349:1)
-    at ClientRequest._onHttpRequestError (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request.js:252:47)
-    at emitOne (events.js:116:13)
-    at ClientRequest.emit (events.js:211:7)
-    at TLSSocket.socketErrorListener (_http_client.js:387:9)
-    at emitOne (events.js:116:13)
-    at TLSSocket.emit (events.js:211:7)
-    at emitErrorNT (internal/streams/destroy.js:64:8)
-    at _combinedTickCallback (internal/process/next_tick.js:138:11)
-    at process._tickCallback (internal/process/next_tick.js:180:9)
-   > confirmation number: 1 (block: 6105029)
-Error: Invalid JSON RPC response: ""
-    at Object.InvalidResponse (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/web3/node_modules/web3-core-helpers/src/errors.js:42:1)
-    at t.InvalidResponse [as onreadystatechange] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/web3/node_modules/web3-providers-http/src/index.js:92:1)
-    at t.call [as dispatchEvent] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request-event-target.js:34:1)
-    at t.dispatchEvent [as _setReadyState] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request.js:208:1)
-    at t._setReadyState [as _onHttpRequestError] (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request.js:349:1)
-    at ClientRequest._onHttpRequestError (/home/sanchaymittal/Prescience/node_modules/truffle-hdwallet-provider/dist/webpack:/truffle-hdwallet-provider/Users/gnidan/src/work/truffle/node_modules/xhr2-cookies/dist/xml-http-request.js:252:47)
-    at emitOne (events.js:116:13)
-    at ClientRequest.emit (events.js:211:7)
-    at TLSSocket.socketErrorListener (_http_client.js:387:9)
-    at emitOne (events.js:116:13)
-    at TLSSocket.emit (events.js:211:7)
-    at emitErrorNT (internal/streams/destroy.js:64:8)
-    at _combinedTickCallback (internal/process/next_tick.js:138:11)
-    at process._tickCallback (internal/process/next_tick.js:180:9)
-   > confirmation number: 2 (block: 6105030)
 
    Deploying 'Main'
    ----------------
-   > transaction hash:    0x5fe8bbb03b6f1f414885a116d6dd565b48f5f2c63d42a9bd4925d0ed9db11fde
-Error: Error: Error:  *** Deployment Failed ***
+   > transaction hash:    0x87a6cf8154c37ae2f78cd3fe5686491ab382c9d4e22491a5eb30a61123dfa22e
+   > Blocks: 2            Seconds: 37
+   > contract address:    0xEbfF9C4BBE0EB848239860c407BAa9CAB76d270c
+   > block number:        6209577
+   > block timestamp:     1566035720
+   > account:             0x0B06EC5728728A0E8868e168577a0f52B42d7A1E
+   > balance:             6.64995386
+   > gas used:            5976229
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.11952458 ETH
 
-"Main" received a generic error from Geth that
-can be caused by hitting revert in a contract constructor or running out of gas.
-   * gas required exceeds allowance or always failing transaction.
-   * Try: + using the '--dry-run' option to reproduce this failure with clearer errors.
-          + verifying that your gas is adequate for this deployment.
 
-    at Object.run (/usr/local/lib/node_modules/truffle/build/webpack:/packages/truffle-migrate/index.js:92:1)
-    at <anonymous>
-    at process._tickCallback (internal/process/next_tick.js:188:7)
-Truffle v5.0.24 (core: 5.0.24)
-Node v8.10.0
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.12100942 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.12100942 ETH
