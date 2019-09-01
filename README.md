@@ -4,8 +4,6 @@
 
 <div align="right">
 
->Author: Sanchay Mittal <br> 
->Consensys Bootcamp 2019 Final Project
 
 </div>
 
